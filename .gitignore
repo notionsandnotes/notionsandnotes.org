@@ -1,0 +1,6 @@
+*.py[cod]
+*.swp
+*~
+pelican/plugins
+pelican/cache
+pelican/publishconf.py
