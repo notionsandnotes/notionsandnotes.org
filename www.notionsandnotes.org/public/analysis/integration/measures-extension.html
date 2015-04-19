@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Lebesgue measure - Notions and Notes</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="../../analysis/integration/measures-extension.html">
+
+        <meta name="author" content="George S." />
+        <meta name="keywords" content="Real Analysis,Measure theory,Caratheodory extension theorem,Sigma algebras,Measure spaces,Lebesgue measure,Complete measures" />
+        <meta name="description" content="Introduction and examples A positive measure on a measurable space \(X\) is a device to “measure” sets belonging to a class \(\Sigma\) of subsets of \(X\). We define this as a function \(l : \Sigma \to [0, \infty]\) satisfying the following axioms: \(l (A) \in [0, \infty]\) for all \(A\). \(l ..." />
+
+        <meta property="og:site_name" content="Notions and Notes" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Lebesgue measure"/>
+        <meta property="og:url" content="../../analysis/integration/measures-extension.html"/>
+        <meta property="og:description" content="Introduction and examples A positive measure on a measurable space \(X\) is a device to “measure” sets belonging to a class \(\Sigma\) of subsets of \(X\). We define this as a function \(l : \Sigma \to [0, \infty]\) satisfying the following axioms: \(l (A) \in [0, \infty]\) for all \(A\). \(l ..."/>
+        <meta property="article:published_time" content="2015-02-05" />
+            <meta property="article:section" content="Analysis" />
+            <meta property="article:tag" content="Real Analysis" />
+            <meta property="article:tag" content="Measure theory" />
+            <meta property="article:tag" content="Caratheodory extension theorem" />
+            <meta property="article:tag" content="Sigma algebras" />
+            <meta property="article:tag" content="Measure spaces" />
+            <meta property="article:tag" content="Lebesgue measure" />
+            <meta property="article:tag" content="Complete measures" />
+            <meta property="article:author" content="George S." />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="../../theme/css/bootstrap.readable.min.css" type="text/css"/>
+    <link href="../../theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="../../theme/css/pygments/monokai.css" rel="stylesheet">
+        <link href="../../theme/css/typogrify.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../theme/css/style.css" type="text/css"/>
+        <link href="../../custom.css" rel="stylesheet">
+
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="../../" class="navbar-brand">
+Notions and Notes            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+
+                   <li class="dropdown active">
+                      <a href="#" class="dropdown-toggle" id="menu-Analysis" data-toggle="dropdown" >
+                       Analysis
+                       <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="../../analysis/integration/measures-extension.html">Lebesgue&nbsp;measure</a></li>
+                      </ul>
+                  </li>
+                   <li class="dropdown ">
+                      <a href="#" class="dropdown-toggle" id="menu-Tech" data-toggle="dropdown" >
+                       Tech
+                       <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="../../tech/web-development/pelican-setup.html">How this blog was set up using&nbsp;Pelican</a></li>
+                      </ul>
+                  </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                   <a href="#" class="dropdown-toggle" id="menu-pages" data-toggle="dropdown" >
+                   Pages
+                   <span class="caret"></span>
+                   </a>
+                   <ul class="dropdown-menu" role="menu">
+                      <li><a href="../../pages/math-links.html">Mathematics&nbsp;Links</a></li>
+                   </ul>
+                </li>
+       
+              <li><a href="../../archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container-fluid">
+<div class="row">
+<div class="col-sm-3" id="sidebar">
+<aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><a href="../../categories.html"><h4><i class="fa fa-barcode fa-lg"></i>
+       <span class="icon-label">Category</span></h4></a>
+       <ul class="fa-ul">
+         <li><i class="fa fa-folder-open fa-lg"></i><a href="../../category/analysis.html">Analysis</a> </li>
+            <li><i class="fa fa-folder-open fa-lg"></i><a href="../../category/analysis/integration/">Integration</a> </li>
+         </ul>
+       </li>
+
+        <li class="list-group-item">
+            <span class="label label-default">By</span>
+            <a href="../../author/george-s.html"><i class="fa fa-pencil"></i> George S.</a>
+        </li>
+
+        <li class="list-group-item">
+          <span class="label label-default">Date</span>
+          <span class="published">
+          <i class="fa fa-calendar"></i><time datetime="2015-02-05T00:00:00+01:00"> 05 February 2015</time>
+          </span>
+        </li>
+
+           <li class="list-group-item">
+            <span class="label label-default">Modified</span>
+            <span class="modified">
+                <i class="fa fa-calendar"></i><time datetime="2015-05-17T00:00:00+02:00"> 17 May 2015</time>
+            </span>
+           </li>
+
+
+     <li class="list-group-item"><h4><i class="fa fa-crosshairs"></i><span class="icon-label">Table of Contents</span></h4>
+       <div class="toc">
+<ul>
+<li><a href="#introduction-and-examples">Introduction and examples</a></li>
+<li><a href="#definition-of-measurable-spaces-and-measures">Definition of Measurable spaces and Measures</a></li>
+<li><a href="#caratheodory-extension-of-measures">Caratheodory extension of measures</a></li>
+<li><a href="#bibliography">Bibliography</a></li>
+</ul>
+</div>
+     <hr />
+
+     <li class="list-group-item"><a href="../../">
+     <h4><i class="fa fa-list fa-lg"></i><span class="icon-label">Lebesgue Theory series</span></h4></a>
+        <ol class="parts">
+            <li class="active">
+              <a href="../../analysis/integration/measures-extension.html"> Lebesgue&nbsp;measure
+              </a>
+            </li>
+        </ol>
+     </li>
+    <hr />
+
+     <li class="list-group-item"><h4><i class="fa fa-tags"></i><span class="icon-label">Tags</span></h4>
+       <ul class="fa-ul">
+         <li><i class="fa fa-tag"></i><a href="../../tag/real-analysis.html">Real Analysis</a></li>
+         <li><i class="fa fa-tag"></i><a href="../../tag/measure-theory.html">Measure theory</a></li>
+         <li><i class="fa fa-tag"></i><a href="../../tag/caratheodory-extension-theorem.html">Caratheodory extension theorem</a></li>
+         <li><i class="fa fa-tag"></i><a href="../../tag/sigma-algebras.html">Sigma algebras</a></li>
+         <li><i class="fa fa-tag"></i><a href="../../tag/measure-spaces.html">Measure spaces</a></li>
+         <li><i class="fa fa-tag"></i><a href="../../tag/lebesgue-measure.html">Lebesgue measure</a></li>
+         <li><i class="fa fa-tag"></i><a href="../../tag/complete-measures.html">Complete measures</a></li>
+        </ul>
+     <hr />
+     </li>
+
+    </ul>
+</section>
+</aside>
+</div>
+<div class="col-sm-8 col-lg-offset-1">
+<section id="content">
+<article>
+    <header class="page-header">
+                <h1>
+                    <a href="../../analysis/integration/measures-extension.html"
+                       rel="bookmark"
+                       title="Permalink to Lebesgue measure">
+                        Lebesgue&nbsp;measure
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                
+<hr/>
+<h3 id="introduction-and-examples">Introduction and examples</h3>
+<hr/>
+<p>A positive measure on a measurable space <span class="math">\(X\)</span> is a device to “measure” sets belonging to a class <span class="math">\(\Sigma\)</span> of subsets of <span class="math">\(X\)</span>. We define this as a 
+function <span class="math">\(l : \Sigma \to [0, \infty]\)</span> satisfying the following axioms:</p>
+<ol>
+<li><span class="math">\(l (A) \in [0, \infty]\)</span> for all <span class="math">\(A\)</span>.</li>
+<li><span class="math">\(l (A \cup B) = l(A) + l(B)\)</span> whenever <span class="math">\(A \cap B = \emptyset\)</span>.</li>
+<li>Let <span class="math">\(A_n\)</span> be a monotone class, i. e., let <span class="math">\(A_1 \subset A_2 \subset \cdots\)</span>, and <span class="math">\(A = \bigcup\limits_{n=1}^\infty A_n\)</span>, then 
+     we have <span class="math">\(l(A) = \lim\limits_{n \to \infty} l(A_n)\)</span>.</li>
+</ol>
+<p>Our first example is the <a href="http://en.wikipedia.org/wiki/Counting_measure"><code>counting measure</code></a>: Here <span class="math">\(\Sigma\)</span> is the power 
+set of <span class="math">\(X\)</span> and for any <span class="math">\(A \subset X\)</span>, <span class="math">\(l(A)\)</span> = <span class="math">\(|A|\)</span> where <span class="math">\(|A|\)</span> denotes the cardinality of <span class="math">\(A\)</span>, a finite number or infinity.</p>
+<p>One more easy example is the <a href="http://en.wikipedia.org/wiki/Dirac_measure"><code>Dirac measure</code></a>. Here we choose a point <span class="math">\(x \in X\)</span>, and, for 
+any subset <span class="math">\(A \subset X\)</span>, we define <span class="math">\(\delta_x(A) = 1\)</span> if <span class="math">\(x \in A\)</span> and <span class="math">\(0\)</span> otherwise. This measure is related to the <a href="http://en.wikipedia.org/wiki/Dirac_delta_function"><code>Dirac Delta 
+function</code></a>.</p>
+<p>Next we consider <a href="http://en.wikipedia.org/wiki/Lebesgue_measure"><code>Lebesgue measures</code></a>. An important model for abstract measures is 
+the notion of <code>length</code> of subsets of <span class="math">\(X = \mathbb R\)</span>, first defined for intervals and then extended to a larger class of subsets or 
+<span class="math">\(\mathbb R\)</span>, satisfying the three properties above. Here we need to prove that such an extension can be done. Other similar models 
+are the notions of <code>area</code> and <code>volume</code> defined when <span class="math">\(X = \mathbb R^2\)</span> and <span class="math">\(X = \mathbb R^3\)</span> respectively. In these cases also it is 
+to be proved that such an extended mapping satisfying the three properties as above can be constructed, meaning that each of these 
+constitute a measure, and this is the Lebesgue measure on <span class="math">\(\mathbb R\)</span> or on <span class="math">\(\mathbb R^n\)</span>. </p>
+<p>The goal of this article is to prove that Lebesgue measure exists for the one-dimensional case, i.e., on <span class="math">\(\mathbb R\)</span>. First, we will 
+prove the slightly more general Caratheodory extension theorem, and then show that <em>length</em> satisfies the conditions necessary for 
+its applications; thus we will have shown the existence of Lebesgue measure.</p>
+<p>The following two additional properties are satisfied for Lebesgue measures:</p>
+<ul>
+<li>For any <span class="math">\(x \in X\)</span>, we have <span class="math">\(l(x + A) = l(A)\)</span>.</li>
+<li><span class="math">\(l(A) = 1\)</span> for the unit interval, unit square and unit cube in dimensions <span class="math">\(1\)</span>, <span class="math">\(2\)</span> and <span class="math">\(3\)</span> respectively. </li>
+</ul>
+<p>The first property means that Lebesgue measure is <a href="http://en.wikipedia.org/wiki/Invariant_measure"><code>translation invariant</code></a>. The second 
+property, in conjunction with all others, can be used to <a href="http://en.wikipedia.org/wiki/Haar_measure">uniquely describe</a> the Lebesgue measure.</p>
+<p>Note that we only claimed that the Lebesgue measures on the Euclidean spaces can be extended to a large class of subsets of the space,
+and not to the class of all subsets of the space. This is because it is possible to construct non-measurable sets<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup> in <span class="math">\(\mathbb R\)</span> 
+assuming the axiom of choice<sup id="fnref:2"><a class="footnote-ref" href="#fn:2" rel="footnote">2</a></sup>. </p>
+<p>Now we pass on to the definitions:</p>
+<hr/>
+<h3 id="definition-of-measurable-spaces-and-measures">Definition of Measurable spaces and Measures</h3>
+<hr/>
+<p><strong>Definition</strong>. An <code>algebra of sets</code> consists of a class <span class="math">\(\cal A\)</span> of subsets of a set <span class="math">\(X\)</span> such that:</p>
+<ol>
+<li><span class="math">\(\emptyset \in \cal A\)</span> and <span class="math">\(X \in \cal A\)</span>.</li>
+<li><span class="math">\(A \in \cal A\)</span> imples <span class="math">\(A^c \in \cal A\)</span>, where <span class="math">\(A^c\)</span> denotes the complement of <span class="math">\(A\)</span> in <span class="math">\(X\)</span>, and,</li>
+<li>If <span class="math">\(A_1\)</span> and <span class="math">\(A_2\)</span> belong to <span class="math">\(\cal A\)</span>, then <span class="math">\(A_1 \cup A_2\)</span> belongs to <span class="math">\(\cal A\)</span>.</li>
+</ol>
+<p><strong>Definition</strong>. A <code>set function</code> on an algebra <span class="math">\(\cal A\)</span> is a function <span class="math">\(\ell\)</span> mapping <span class="math">\(\cal A\)</span> to a suitable
+range for the function, for example, <span class="math">\([0, \infty]\)</span> or to <span class="math">\(\mathbb C\)</span>.</p>
+<p><strong>Definition</strong> A set function <span class="math">\(\ell\)</span> on an algebra <span class="math">\(\cal A\)</span> is said to be <code>finitely additive</code> if it satisfies the condition that, 
+when <span class="math">\(A_1, A_2 \in \cal A\)</span> such that <span class="math">\(A \cap B =\emptyset\)</span>, then <span class="math">\(\ell(A \cup B) = \ell(A) + \ell(B)\)</span>.</p>
+<p><strong>Definition</strong>. A <code>measurable space</code> consists of a pair <span class="math">\((X, \Sigma )\)</span> where <span class="math">\(X\)</span> is a set and <span class="math">\(\Sigma\)</span> is a collection of subsets of <span class="math">\(X\)</span>
+such that:</p>
+<ol>
+<li><span class="math">\(\emptyset \in \Sigma\)</span> and <span class="math">\(X \in \Sigma\)</span>.</li>
+<li><span class="math">\(A \in \Sigma\)</span> imples <span class="math">\(A^c \in \Sigma\)</span>, where <span class="math">\(A^c\)</span> denotes the complement of <span class="math">\(A\)</span> in <span class="math">\(X\)</span>, and,</li>
+<li>If <span class="math">\(A_1, A_2, \ldots, A_n , \ldots\)</span> all belong to <span class="math">\(\Sigma\)</span>, then <span class="math">\(\bigcup\limits_{n=1}^\infty A_n\)</span> belongs to <span class="math">\(\Sigma\)</span>.</li>
+</ol>
+<p>When <span class="math">\(\Sigma\)</span> satisfies the above three conditions, it is called a <span class="math">\(\sigma\)</span>-algebra, or <code>sigma-algebra</code>  of subsets of <span class="math">\(X\)</span>. 
+A set <span class="math">\(A\)</span> in <span class="math">\(\Sigma\)</span> is said to be a measurable set.</p>
+<p><strong>Remark</strong>. If <span class="math">\(X\)</span> has a topology <span class="math">\(\cal T\)</span> on it, then there is a natural <span class="math">\(\sigma\)</span>-algebra <span class="math">\(\cal B\)</span> on <span class="math">\(X\)</span>, which is the smallest
+<span class="math">\(\sigma\)</span>-algebra containing <span class="math">\(\cal T\)</span>, or equivalently, the intersection of all <span class="math">\(\sigma\)</span>-algebras containing <span class="math">\(\cal T\)</span>. This is
+called the Borel <span class="math">\(\sigma\)</span>-algebra.</p>
+<p><strong>Definition</strong>. A <code>measure space</code> consists of a triple <span class="math">\((X, \Sigma, \ell)\)</span> where <span class="math">\((X, \Sigma )\)</span> form a measurable space and <span class="math">\(\ell\)</span> is 
+a set function, called the measure, on <span class="math">\(\Sigma\)</span> satisfying the following conditions:</p>
+<ol>
+<li><span class="math">\(\ell (A \cup B) = \ell(A) + \ell(B)\)</span> whenever <span class="math">\(A \cap B = \emptyset\)</span>.</li>
+<li>Let <span class="math">\(A_n\)</span> be a sequence of sets in <span class="math">\(\Sigma\)</span> which are pairwise disjoint. Then we have, 
+     <div class="math">$$\ell \left( \coprod_{n=1}^\infty A_n \right)  = \sum_{n=1}^\infty \ell(A_n).$$</div>
+</li>
+</ol>
+<p>For a set <span class="math">\(A \in \Sigma\)</span>, we cann <span class="math">\(\ell(A)\)</span> the measure of <span class="math">\(A\)</span>. </p>
+<p>If  <span class="math">\(\ell(A) \in [0, \infty]\)</span> for all <span class="math">\(A\)</span>, then  <span class="math">\(\ell\)</span> is a <code>positive measure</code> and if  <span class="math">\(\ell(A) \in \mathbb C\)</span> for all <span class="math">\(A\)</span>, then
+<span class="math">\(\ell\)</span> is a <code>complex measure</code>. We restrict ourselves to positive measures in this page.</p>
+<p>The measure on <span class="math">\(X\)</span> is called <span class="math">\(\sigma\)</span><code>-finite</code> if there exists a sequence <span class="math">\(A_n\)</span> of measurable sets each of finite measure, such that 
+<span class="math">\(\cup_{n=1}^\infty A_n = X\)</span>.</p>
+<p>Let <span class="math">\(X\)</span> be a space. A function <span class="math">\(\mu : 2^X \to [0, \infty]\)</span> </p>
+<p>When <span class="math">\(\Sigma\)</span> is replaced by an algebra <span class="math">\(\cal A\)</span> of sets, and if there is a set function on it satisfying the above two conditions
+whenever it makes sense, we still call it a measure on the algebra. In this case, we can extend the measure to the <span class="math">\(\sigma\)</span>-algebra
+generated by <span class="math">\(\cal A\)</span>, provided the measure on <span class="math">\(\cal A\)</span> is <span class="math">\(\sigma\)</span>-finite in the above sense. This is the process of Caratheodory 
+extension, described below.</p>
+<hr/>
+<h3 id="caratheodory-extension-of-measures">Caratheodory extension of measures</h3>
+<hr/>
+<p>Caratheodory extension gives a <code>complete measure</code>, i.e., one in which all subsets of a set of measure
+<span class="math">\(0\)</span> are measurable. Note that the <span class="math">\(\sigma\)</span>-algebra obtained via the theorem is not is not the maximal class of subsets to which 
+the measure can be extended.<sup id="fnref:3"><a class="footnote-ref" href="#fn:3" rel="footnote">3</a></sup></p>
+<hr/>
+<h3 id="bibliography">Bibliography</h3>
+<hr/>
+<p>The following are some books on measure theory, sorted by alphabetical order of (first) author's name.</p>
+<ol>
+<li><span class="caps">K. B.</span> Athreya and <span class="caps">S. N.</span> Lahiri, Measure Theory and Probability <a href="http://goo.gl/36NR9m"><img alt="Buy this book from Amazon.com! Please follow through this Amazon Affiliate link. Support our site running expenses." src="../../images/amazon_24_black.png" style="width: 24px; height: auto;"/></a></li>
+<li><span class="caps">S. R.</span> Athreya and <span class="caps">V. S.</span> Sunder, Measure and Probability <a href="http://goo.gl/Nd2UYW"><img alt="Amazon buy affiliate link. Support our site." src="../../images/amazon_24_black.png" style="width: 24px; height: auto;"/></a></li>
+<li><span class="caps">V. I.</span> Bogachev, Measure Theory. Vols. 1, 2. <a href="http://goo.gl/f95onH"><img alt="Amazon buy affiliate link. Support our site." src="../../images/amazon_24_black.png" style="width: 24px; height: auto;"/></a></li>
+<li><span class="caps">J. L.</span> Doob, Measure Theory <a href="http://goo.gl/6QohkW"><img alt="Amazon buy affiliate link. Support our site." src="../../images/amazon_24_black.png" style="width: 24px; height: auto;"/></a></li>
+<li>H. Federer, Geometric Measure Theory <a href="http://goo.gl/mgwT4p"><img alt="Amazon buy affiliate link. Support our site." src="../../images/amazon_24_black.png" style="width: 24px; height: auto;"/></a></li>
+<li><span class="caps">D. H.</span> Fremlin, Measure Theory, Vols, 1-5. <a href="http://goo.gl/167Qlr"><img alt="Amazon buy affiliate link. Support our site." src="../../images/amazon_24_black.png" style="width: 24px; height: auto;"/></a></li>
+<li><span class="caps">P. R.</span> Halmos, Measure Theory <a href="http://goo.gl/FEr1Bs"><img alt="Amazon buy affiliate link. Support our site." src="../../images/amazon_24_black.png" style="width: 24px; height: auto;"/></a></li>
+<li>O. Kallenberg, Foundations of Modern Probability <a href="http://goo.gl/pD1hGw"><img alt="Amazon buy affiliate link. Support our site." src="../../images/amazon_24_black.png" style="width: 24px; height: auto;"/></a></li>
+<li>P. Mattila, Geometry of Sets and Measures in Euclidean Spaces<a href="http://goo.gl/YdcRCu"><img alt="Amazon buy affiliate link. Support our site." src="../../images/amazon_24_black.png" style="width: 24px; height: auto;"/></a></li>
+<li>L. Nachbin, The Haar Integral <a href="http://goo.gl/wupLDI"><img alt="Amazon buy affiliate link. Support our site." src="../../images/amazon_24_black.png" style="width: 24px; height: auto;"/></a></li>
+<li>H. Royden, Real Analysis <a href="http://goo.gl/YTsbh9"><img alt="Amazon buy affiliate link. Support our site." src="../../images/amazon_24_black.png" style="width: 24px; height: auto;"/></a></li>
+<li>W. Rudin, Real and Complex Analysis <a href="http://goo.gl/evzzpD"><img alt="Amazon buy affiliate link. Support our site." src="../../images/amazon_24_black.png" style="width: 24px; height: auto;"/></a></li>
+</ol>
+<p>Terrence Tao’s blog has <a href="https://terrytao.wordpress.com/2010/10/30/245a-notes-6-outer-measures-pre-measures-and-product-measures/">an article on outer measures, pre-measures and product measures</a> in which he emphasizes Caratheodory extension and also another on <a href="https://terrytao.wordpress.com/2009/01/03/254a-notes-0a-an-alternate-approach-to-the-caratheodory-extension-theorem/">an alternate approach to the theorem</a>.</p>
+<div class="footnote">
+<hr/>
+<ol>
+<li id="fn:1">
+<p>A <em>Hamel Basis</em> means a basis of <span class="math">\(\mathbb R\)</span> as a vector space over the field <span class="math">\(\mathbb Q\)</span>. There exist examples by Vitali and Levy 
+of nonmeasurable sets constructed using a Hamel basis. Cit: <a href="https://www.imsc.res.in/~sunder/mgnvss.pdf"><span class="caps">M. G.</span> Nadkarni and <span class="caps">V. S.</span> Sunder</a>. <a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+<li id="fn:2">
+<p>If the axiom of choice is not assumed, then it is not possible to do much meaningful measure theory. For more into this topic,
+consult books on descriptive set theory, for example Mansfield-Weitkamp, Recursive Aspects of Descriptive Set Theory, 
+Oxford University Press, Oxford (1985).  <a class="footnote-backref" href="#fnref:2" rev="footnote" title="Jump back to footnote 2 in the text">↩</a></p>
+</li>
+<li id="fn:3">
+<p>It can be shown for example that a measure on <span class="math">\(\sigma\)</span>-algebra <span class="math">\(\Sigma\)</span> that is properly contained
+in the power set of <span class="math">\(X\)</span> can always be extended to a bigger <span class="math">\(\sigma\)</span>-algebra. For a proof, see <span class="caps">V. I.</span> Bogachev,
+Measure Theory,  <a class="footnote-backref" href="#fnref:3" rev="footnote" title="Jump back to footnote 3 in the text">↩</a></p>
+</li>
+</ol>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+    
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+   </div>
+
+</div>
+<footer>
+   <div class="container-fluid">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2015 George S.
+            &middot; <font size=1>Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a></font>              <p><small>  <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>, except where indicated otherwise.
+</small></p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="../../theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../../theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="../../theme/js/respond.min.js"></script>
+
+
+</body>
+</html>

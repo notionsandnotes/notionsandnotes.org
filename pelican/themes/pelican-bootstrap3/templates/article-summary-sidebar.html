@@ -1,0 +1,60 @@
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+    {% if SHOW_ARTICLE_AUTHOR %}
+        {% if article.author %}
+        <li class="list-group-item">
+            <span class="label label-default">By</span>
+            <a href="{{ SITEURL }}/{{ article.author.url }}"><i class="fa fa-pencil"></i> {{ article.author }}</a>
+        </li>
+        {% endif %}
+    {% endif %}
+
+        <li class="list-group-item">
+          <span class="label label-default">Date</span>
+          <span class="published">
+          <i class="fa fa-calendar"></i><time datetime="{{ article.date.isoformat() }}"> {{ article.locale_date }}</time>
+          </span>
+        </li>
+
+    {% if SHOW_DATE_MODIFIED %}
+        {% if article.modified %}
+           <li class="list-group-item">
+            <span class="label label-default">Modified</span>
+            <span class="modified">
+                <i class="fa fa-calendar"></i><time datetime="{{ article.modified.isoformat() }}"> {{ article.locale_modified }}</time>
+            </span>
+           </li>
+        {% endif %}
+    {% endif %}
+
+      <li class="list-group-item"><a href="{{ SITEURL }}/{{ CATEGORIES_SAVE_AS }}"><h4><i class="fa fa-barcode fa-lg"></i>
+       <span class="icon-label">Category</span></h4></a>
+       <ul class="fa-ul">
+         <li><i class="fa fa-folder-open fa-lg"></i><a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category}}</a> </li>
+          {% for subcategory in article.subcategories %}
+            <li><i class="fa fa-folder-open fa-lg"></i><a href="{{ SITEURL }}/{{ subcategory.url }}">{{ subcategory.shortname }}</a> </li>
+          {% endfor %}
+         </ul>
+       </li>
+
+    {% if PDF_PROCESSOR %}
+       <li class="list-group-item">
+        <span class="label label-default">
+            <a href="{{ SITEURL }}/pdf/{{ article.slug }}.pdf">PDF</a>
+        </span>
+       </li>
+    {% endif %}
+
+     <li class="list-group-item"><h4><i class="fa fa-tags"></i><span class="icon-label">Tags</span></h4>
+       <ul class="fa-ul">
+        {% for tag in article.tags %}
+         <li><i class="fa fa-tag"></i><a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a></li>
+        {% endfor %}
+        </ul>
+     <hr />
+     </li>
+
+    </ul>
+</section>
+

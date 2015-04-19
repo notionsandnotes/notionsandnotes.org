@@ -43,16 +43,32 @@ Here are some links filtered out from my bookmarks. Only those open to the publi
 * [Notices of the AMS]([http://www.ams.org/notices/).
 * [Quanta](http://www.simonsfoundation.org/quanta/)
 
----------------------------------------------------------------------------
----------------------------------------------------------------------------
+
+###Software
+-------
+
+We emphasize primarily open-source and free software here considering the financial constraints of unaffiliated or obscurely placed people.
+
+* [LaTeX](http://www.latex-project.org/) is very useful for document preparation and mathematics typesetting.
+* [Python](https://www.python.org/) is a general purpose programming language which is easy to read and comparatively pleasant to code in. See also [SymPy](http://www.sympy.org/en/index.html), [nymPy](http://www.numpy.org/) for numerical programming, [PyCrypto](https://www.dlitz.net/software/pycrypto/) for cryptography, [NetworkX](http://networkx.github.io/) for network simulation and finally the beautiful [IPython](http://ipython.org/) project and [notebooks](http://ipython.org/ipython-doc/stable/notebook/index.html).
+* [Sage](http://www.sagemath.org/) aka [SageMath](http://www.sagemath.org/) is a free open-source package aiming to be an alternative to [Magma](http://magma.maths.usyd.edu.au/magma/), [Maple](http://www.maplesoft.com/), [Mathematica](http://www.wolfram.com/mathematica/) and [Matlab](http://in.mathworks.com/products/matlab/).
+* [PARI/GP](http://pari.math.u-bordeaux.fr/) is a computer algebra system mainly focused on number theory.
+* [Elliptic curve database](http://homepages.warwick.ac.uk/~masgaj/ftp/data/) of Cremona.
+* [Regina](http://regina.sourceforge.net/) for 3-manifolds.
+* [Macaulay2](http://www.math.uiuc.edu/Macaulay2/) for algebraic geometry.
+* [GAP](http://www.gap-system.org/) for Computational Discrete Algebra, Groups, representations, etc.
+* [R](http://www.r-project.org/) project for statistics and data science.
+
+----------------------------------------
+----------------------------------------
 
 
 #Blogs
 
 This list owes a great debt to the one hosted at the blog of [Terence Tao](http://terrytao.wordpress.com).
 
----------------------------------------------------------------------------
----------------------------------------------------------------------------
+----------------------------------------
+----------------------------------------
 
   
   

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>How this blog was set up using Pelican - Notions and Notes</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="../../tech/web-development/pelican-setup.html">
+
+        <meta name="author" content="George S." />
+        <meta name="keywords" content="pelican,python" />
+        <meta name="description" content="In this post it is documented how this blog was constructed using a static site maker, meaning, there is no server-side processing of data. Why a static site? The three main reasons are, simplicity, control, and because I can do it. Compared to wordpress, static sites in Markdown or other ..." />
+
+        <meta property="og:site_name" content="Notions and Notes" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="How this blog was set up using Pelican"/>
+        <meta property="og:url" content="../../tech/web-development/pelican-setup.html"/>
+        <meta property="og:description" content="In this post it is documented how this blog was constructed using a static site maker, meaning, there is no server-side processing of data. Why a static site? The three main reasons are, simplicity, control, and because I can do it. Compared to wordpress, static sites in Markdown or other ..."/>
+        <meta property="article:published_time" content="2015-04-10" />
+            <meta property="article:section" content="Tech" />
+            <meta property="article:tag" content="pelican" />
+            <meta property="article:tag" content="python" />
+            <meta property="article:author" content="George S." />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="../../theme/css/bootstrap.readable.min.css" type="text/css"/>
+    <link href="../../theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="../../theme/css/pygments/monokai.css" rel="stylesheet">
+        <link href="../../theme/css/typogrify.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../theme/css/style.css" type="text/css"/>
+        <link href="../../custom.css" rel="stylesheet">
+
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="../../" class="navbar-brand">
+Notions and Notes            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+
+                   <li class="dropdown ">
+                      <a href="#" class="dropdown-toggle" id="menu-Analysis" data-toggle="dropdown" >
+                       Analysis
+                       <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="../../analysis/integration/measures-extension.html">Lebesgue&nbsp;measure</a></li>
+                      </ul>
+                  </li>
+                   <li class="dropdown active">
+                      <a href="#" class="dropdown-toggle" id="menu-Tech" data-toggle="dropdown" >
+                       Tech
+                       <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="../../tech/web-development/pelican-setup.html">How this blog was set up using&nbsp;Pelican</a></li>
+                      </ul>
+                  </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                   <a href="#" class="dropdown-toggle" id="menu-pages" data-toggle="dropdown" >
+                   Pages
+                   <span class="caret"></span>
+                   </a>
+                   <ul class="dropdown-menu" role="menu">
+                      <li><a href="../../pages/math-links.html">Mathematics&nbsp;Links</a></li>
+                   </ul>
+                </li>
+       
+              <li><a href="../../archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container-fluid">
+<div class="row">
+<div class="col-sm-3" id="sidebar">
+<aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><a href="../../categories.html"><h4><i class="fa fa-barcode fa-lg"></i>
+       <span class="icon-label">Category</span></h4></a>
+       <ul class="fa-ul">
+         <li><i class="fa fa-folder-open fa-lg"></i><a href="../../category/tech.html">Tech</a> </li>
+            <li><i class="fa fa-folder-open fa-lg"></i><a href="../../category/tech/web-development/">Web Development</a> </li>
+         </ul>
+       </li>
+
+        <li class="list-group-item">
+            <span class="label label-default">By</span>
+            <a href="../../author/george-s.html"><i class="fa fa-pencil"></i> George S.</a>
+        </li>
+
+        <li class="list-group-item">
+          <span class="label label-default">Date</span>
+          <span class="published">
+          <i class="fa fa-calendar"></i><time datetime="2015-04-10T00:00:00+02:00"> 10 April 2015</time>
+          </span>
+        </li>
+
+
+
+     <li class="list-group-item"><h4><i class="fa fa-crosshairs"></i><span class="icon-label">Table of Contents</span></h4>
+       <div class="toc">
+<ul>
+<li><a href="#why-a-static-site">Why a static site?</a></li>
+<li><a href="#setting-up-pip-and-virtualenv">Setting up pip and virtualenv</a></li>
+<li><a href="#installing-pelican-themes-and-plugins">Installing pelican, themes and plugins</a></li>
+<li><a href="#configuration-file">Configuration file</a></li>
+<li><a href="#workflow">Workflow</a></li>
+<li><a href="#screenshots">Screenshots:</a></li>
+</ul>
+</div>
+     <hr />
+
+
+     <li class="list-group-item"><h4><i class="fa fa-tags"></i><span class="icon-label">Tags</span></h4>
+       <ul class="fa-ul">
+         <li><i class="fa fa-tag"></i><a href="../../tag/pelican.html">pelican</a></li>
+         <li><i class="fa fa-tag"></i><a href="../../tag/python.html">python</a></li>
+        </ul>
+     <hr />
+     </li>
+
+    </ul>
+</section>
+</aside>
+</div>
+<div class="col-sm-8 col-lg-offset-1">
+<section id="content">
+<article>
+    <header class="page-header">
+                <h1>
+                    <a href="../../tech/web-development/pelican-setup.html"
+                       rel="bookmark"
+                       title="Permalink to How this blog was set up using Pelican">
+                        How this blog was set up using&nbsp;Pelican
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                
+<p>In this post it is documented how this blog was constructed using a static site maker, meaning, 
+there is no server-side processing of data.</p>
+<hr/>
+<h3 id="why-a-static-site">Why a static site?</h3>
+<hr/>
+<p>The three main reasons are, simplicity, control, and <em>because I can do it</em>.</p>
+<p>Compared to wordpress, static sites in Markdown or other simple formatting languages such as 
+<a href="http://docutils.sourceforge.net/rst.html">reStructuredText</a>, are much simpler and much easier to control, and less susceptible 
+to version changes. Pre-publication testing is easy and can be done offline. Deploying is simply copying the files
+to a server. There is no <span class="caps">PHP</span> or database setup required. The hosting resources required are very small, allowing
+one to use very cheap hosts such as <a href="http://nearlyfreespeech.net">NearlyFreeSpeech</a>.</p>
+<p>Markdown is chosen because various math sites use it and <a href="https://github.com/getpelican/pelican">pelican</a> 
+was chose because it is Pythonic. Python is  a language I was interested in at various times, 
+and I do not have time to learn another language such as <a href="https://www.ruby-lang.org/">Ruby</a> to 
+use alternate popular static site platforms such as <a href="http://jekyllrb.com/">Jekyll</a>. </p>
+<p>Also all this is very well-integrated with Linux, my favorite operating system.</p>
+<hr/>
+<h3 id="setting-up-pip-and-virtualenv">Setting up pip and virtualenv</h3>
+<hr/>
+<p>It is expected that:</p>
+<ul>
+<li>The user is proficient in Linux and the terminal. It is assumed in the following that we are working on an Ubuntu 14 installation.</li>
+<li>User is proficient in <a href="http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html">bash</a> and knows how to use <a href="https://www.python.org">python</a>.</li>
+<li>User knows utilities such as <code>git</code>, <code>make</code>, etc., and is familiar with web servers.</li>
+</ul>
+<p><code>pip</code> is the python package installer. It takes care of all the Pythonic dependency hell. Use:</p>
+<div class="highlight"><pre><span class="code-line"><span class="go">~$ sudo apt-get install -y python-pip python-virtualenv virtualenvwrapper</span></span>
+</pre></div>
+<p>We do not want to do any global python package installations from now onwards. The method is to use 
+<a href="http://docs.python-guide.org/en/latest/dev/virtualenvs/">virtual environments</a> in which the user installs
+packages inside a local directory and runs them through wrapper scripts. There can be multiple such environments and the user can switch back and forth between them, with parameters being different each time. This gives much flexibility for development.</p>
+<p>Now we create the <code>virtualenv</code> named <code>pelican</code> for our blogging purposes. The machine is named <code>soliloquy</code>.</p>
+<div class="highlight"><pre><span class="code-line"><span class="gp">$</span> mkvirtualenv pelican</span>
+<span class="code-line"><span class="go">Running virtualenv with interpreter /usr/bin/python2</span></span>
+<span class="code-line"><span class="go">New python executable in pelican/bin/python2</span></span>
+<span class="code-line"><span class="go">Also creating executable in pelican/bin/python</span></span>
+<span class="code-line"><span class="go">Installing setuptools, pip...done.</span></span>
+<span class="code-line"><span class="go">(pelican)~$</span></span>
+</pre></div>
+<p>Note the change in the <code>bash</code> prompt. Use <code>workon</code> and <code>deactivate</code> to activate/deactive the python environment:</p>
+<div class="highlight"><pre><span class="code-line"><span class="go">~$ workon pelican</span></span>
+<span class="code-line"><span class="go">(pelican)~$ deactivate</span></span>
+<span class="code-line"><span class="go">~$</span></span>
+</pre></div>
+<p>This sequence will be part of the blogging workflow whenever required.</p>
+<hr/>
+<h3 id="installing-pelican-themes-and-plugins">Installing pelican, themes and plugins</h3>
+<hr/>
+<p>Install <code>pelican</code>:</p>
+<div class="highlight"><pre><span class="code-line"><span class="go">~$ mkdir ~/work/blog</span></span>
+<span class="code-line"><span class="go">~$ cd ~/work/blog</span></span>
+<span class="code-line"><span class="go">~/work/blog$ workon pelican</span></span>
+<span class="code-line"><span class="go">(pelican)~/work/blog$ pip install pelican</span></span>
+</pre></div>
+<p>It downloads and install many packages and finishes with:</p>
+<div class="highlight"><pre><span class="code-line"><span class="go">Successfully installed pelican jinja2 blinker pygments docutils python-dateutil pytz six feedgenerator unidecode markupsafe</span></span>
+<span class="code-line"><span class="go">Cleaning up...</span></span>
+<span class="code-line"><span class="go">(pelican)~/work/blog$</span></span>
+</pre></div>
+<p>Now we have pelican installed!</p>
+<p><a href="https://github.com/getpelican/pelican"><img alt="Pelican" src="../../images/pelican.png" style="width: 200px; height: auto;"/></a></p>
+<p>Install additional packages:</p>
+<div class="highlight"><pre><span class="code-line"><span class="go">(pelican)~/work/blog$ pip install Markdown beautifulsoup4 typogrify Pillow webassets</span></span>
+</pre></div>
+<p>Create directory <code>pelican</code> and run <code>pelican-quickstart</code> to set up the pelican blogging platform inside it:</p>
+<div class="highlight"><pre><span class="code-line"><span class="go">(pelican)~/work/blog$ mkdir pelican</span></span>
+<span class="code-line"><span class="go">(pelican)~/work/blog$ pelican-quickstart </span></span>
+<span class="code-line"><span class="go">Welcome to pelican-quickstart v3.5.0.</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="go">This script will help you create a new Pelican-based website.</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="go">Please answer the following questions so this script can generate the files needed by Pelican.</span></span>
+<span class="code-line"></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="go">&gt; Where do you want to create your new web site? [.] pelican</span></span>
+<span class="code-line"><span class="go">&gt; What will be the title of this web site? Notions and Notes</span></span>
+<span class="code-line"><span class="go">&gt; Who will be the author of this web site? George S.</span></span>
+<span class="code-line"><span class="go">&gt; What will be the default language of this web site? [en] </span></span>
+<span class="code-line"><span class="go">&gt; Do you want to specify a URL prefix? e.g., http://example.com   (Y/n) </span></span>
+<span class="code-line"><span class="go">&gt; What is your URL prefix? (see above example; no trailing slash) http://www.notionsandnotes.org</span></span>
+<span class="code-line"><span class="go">&gt; Do you want to enable article pagination? (Y/n) </span></span>
+<span class="code-line"><span class="go">&gt; How many articles per page do you want? [10] </span></span>
+<span class="code-line"><span class="go">&gt; Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) </span></span>
+<span class="code-line"><span class="go">&gt; Do you want an auto-reload &amp; simpleHTTP script to assist with theme and site development? (Y/n) </span></span>
+<span class="code-line"><span class="go">&gt; Do you want to upload your website using FTP? (y/N) </span></span>
+<span class="code-line"><span class="go">&gt; Do you want to upload your website using SSH? (y/N) y</span></span>
+<span class="code-line"><span class="go">&gt; What is the hostname of your SSH server? [localhost] notionsandnotes</span></span>
+<span class="code-line"><span class="go">&gt; What is the port of your SSH server? [22] </span></span>
+<span class="code-line"><span class="go">&gt; What is your username on that server? [root] </span></span>
+<span class="code-line"><span class="go">&gt; Where do you want to put your web site on that server? [/var/www] </span></span>
+<span class="code-line"><span class="go">&gt; Do you want to upload your website using Dropbox? (y/N) </span></span>
+<span class="code-line"><span class="go">&gt; Do you want to upload your website using S3? (y/N) </span></span>
+<span class="code-line"><span class="go">&gt; Do you want to upload your website using Rackspace Cloud Files? (y/N) </span></span>
+<span class="code-line"><span class="go">&gt; Do you want to upload your website using GitHub Pages? (y/N) </span></span>
+<span class="code-line"><span class="go">Done. Your new project is available at /home/george/work/blog/pelican</span></span>
+</pre></div>
+<p>Note that, here, the full details of the ssh server are not provided. In my case, it is stored instead
+in the <code>~/.ssh/config</code> file, as per <a href="http://nerderati.com/2011/03/17/simplify-your-life-with-an-ssh-config-file/">ssh config</a>
+directives. Replace it as necessary.</p>
+<p>We do typesetting using <a href="http://daringfireball.net/projects/markdown/">Markdown</a>. Under the <code>~/work/blog</code> directory, we store the site files 
+in various subdirectories of the directory <code>raw</code>. The published site is stored under another 
+directory <code>www.notionsandnotes.org</code>. As mentioned earlier, <code>pelican</code> directory stores the files
+for pelican. So we have three subdirectories in total for the <code>blog</code> directory.</p>
+<p>Now set up these two additional directories and also initialize <a href="http://git-scm.com/documentation">git</a> to enable version control and rollbacks(if required):</p>
+<div class="highlight"><pre><span class="code-line"><span class="go">(pelican)~/work/blog$ mkdir www.notionsandnotes.org</span></span>
+<span class="code-line"><span class="go">(pelican)~/work/blog$ mv pelican/content ./raw</span></span>
+<span class="code-line"><span class="go">(pelican)~/work/blog$ git init .</span></span>
+<span class="code-line"><span class="go">(pelican)~/work/blog$ git add .</span></span>
+<span class="code-line"><span class="go">(pelican)~/work/blog$ git commit -m "Initial commit"</span></span>
+</pre></div>
+<p>Now to use pelican <a href="https://github.com/getpelican/pelican-themes">themes</a> and <a href="https://github.com/getpelican/pelican-plugins">plugins</a>, clone these from github as <a href="http://git-scm.com/book/en/v2/Git-Tools-Submodules">submodules</a>:</p>
+<div class="highlight"><pre><span class="code-line"><span class="go">(pelican)~/work/blog$ cd pelican</span></span>
+<span class="code-line"><span class="go">(pelican)~/work/blog$ git submodule add https://github.com/getpelican/pelican-themes.git themes </span></span>
+<span class="code-line"><span class="go">(pelican)~/work/blog$ git submodule add https://github.com/getpelican/pelican-plugins.git plugins</span></span>
+<span class="code-line"><span class="go">(pelican)~/work/blog$ cd ..</span></span>
+<span class="code-line"><span class="go">(pelican)~/work/blog$ git -commit -m "Themes+Plugins"</span></span>
+</pre></div>
+<hr/>
+<h3 id="configuration-file">Configuration file</h3>
+<hr/>
+<p>There are two config files, <code>pelicanconf.py</code> and <code>publishconf.py</code>. We mostly work with the latter. 
+Both are python files. Set the following configuration directives:</p>
+<div class="highlight"><pre><span class="code-line"><span class="n">PLUGIN_PATHS</span> <span class="o">=</span> <span class="p">[</span><span class="s">'./plugins'</span><span class="p">]</span></span>
+<span class="code-line"><span class="n">PLUGINS</span> <span class="o">=</span> <span class="p">[</span><span class="s">'extract_toc'</span><span class="p">,</span><span class="s">'render_math'</span><span class="p">,</span><span class="s">'disqus_static'</span><span class="p">,</span><span class="s">'better_figures_and_images'</span><span class="p">]</span></span>
+<span class="code-line"><span class="n">MD_EXTENSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s">'codehilite'</span><span class="p">,</span><span class="s">'extra'</span><span class="p">,</span><span class="s">'smarty'</span><span class="p">,</span> <span class="s">'toc'</span><span class="p">]</span></span>
+</pre></div>
+<p>We have included plugins for: <a href="https://github.com/getpelican/pelican-plugins/tree/master/extract_toc">table of contents</a>, <a href="https://github.com/barrysteyn/pelican_plugin-render_math">LaTeX rendering of math</a>, etc., and similar Markdown extensions are added too. The <code>toc</code> Markdown extension
+is for example required for the <code>extract_toc</code> plugin. The “Better Figures and Images” plugin is taken <a href="http://duncanlock.net/blog/2013/05/29/better-figures-images-plugin-for-pelican/">from Duncan Lock</a>, 
+whose site was most helpful for this pelican setup. Plugin <a href="https://github.com/getpelican/pelican-plugins/tree/master/assets">assets</a> is for 
+minification of javascript etc..</p>
+<p>Now set the directives:</p>
+<div class="highlight"><pre><span class="code-line"><span class="n">PATH</span> <span class="o">=</span> <span class="s">'../raw'</span></span>
+<span class="code-line"><span class="n">OUTPUT_PATH</span> <span class="o">=</span> <span class="s">'../www.notionsandnotes.org/'</span></span>
+<span class="code-line"><span class="n">STATIC_PATHS</span> <span class="o">=</span> <span class="p">[</span><span class="s">'extra'</span><span class="p">,</span> <span class="s">'images'</span><span class="p">,</span> <span class="s">'pdfs'</span><span class="p">]</span></span>
+<span class="code-line"><span class="n">EXTRA_PATH_METADATA</span> <span class="o">=</span> <span class="p">{</span></span>
+<span class="code-line">    <span class="s">'extra/robots.txt'</span><span class="p">:</span> <span class="p">{</span><span class="s">'path'</span><span class="p">:</span> <span class="s">'robots.txt'</span><span class="p">},</span></span>
+<span class="code-line">    <span class="s">'extra/favicon.ico'</span><span class="p">:</span> <span class="p">{</span><span class="s">'path'</span><span class="p">:</span> <span class="s">'favicon.ico'</span><span class="p">},</span></span>
+<span class="code-line">    <span class="s">'extra/htaccess'</span><span class="p">:</span> <span class="p">{</span><span class="s">'path'</span><span class="p">:</span> <span class="s">'.htaccess'</span><span class="p">}</span></span>
+<span class="code-line"><span class="p">}</span></span>
+</pre></div>
+<p>Create a <a href="http://querbalken.net/add-favicon-to-my-adoption-of-pelican-theme-tuxlite_tbs-en.html">favicon</a> and <a href="https://github.com/getpelican/pelican/wiki/Tips-n-Tricks">robots.txt</a> as required. A <a href="http://docs.getpelican.com/en/latest/tips.html">custom 404 page</a> can be embedded via a
+.htaccess configuration directive. <a href="/404.html">This</a> is ours!</p>
+<p>We use the <code>built-texts</code> theme and the following directives are added as data for it:</p>
+<div class="highlight"><pre><span class="code-line"><span class="n">THEME</span> <span class="o">=</span> <span class="s">'themes/built-texts'</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="n">COLOPHON</span> <span class="o">=</span> <span class="bp">True</span></span>
+<span class="code-line"><span class="n">COLOPHON_TITLE</span> <span class="o">=</span> <span class="s">'About'</span></span>
+<span class="code-line"><span class="n">COLOPHON_CONTENT</span> <span class="o">=</span> <span class="s">"Mainly...."</span></span>
+</pre></div>
+<p>Edit the <a href="http://www.gnu.org/software/make/manual/make.html">Makefile</a> as follows:</p>
+<div class="highlight"><pre><span class="code-line"><span class="nv">INPUTDIR</span><span class="o">=</span><span class="k">$(</span>BASEDIR<span class="k">)</span>/../raw</span>
+<span class="code-line"><span class="nv">OUTPUTDIR</span><span class="o">=</span><span class="k">$(</span>BASEDIR<span class="k">)</span>/../www.notionsandnotes.org</span>
+</pre></div>
+<p>Add in other parameters, such as the ssh hostname, as required.</p>
+<hr/>
+<h3 id="workflow">Workflow</h3>
+<hr/>
+<p>First, enable the virtual environment ‘pelican’ using ‘workon’(and remember to ‘deactivate’ it later.
+Posts are created and edited using plain text editors in files with *.md extensions, in Markdown format.
+For example, these are the first few lines of the Markdown for this page:</p>
+<div class="highlight"><pre><span class="code-line">Title: How this blog was set up using Pelican</span>
+<span class="code-line">Date: 2015-04-10 </span>
+<span class="code-line">Category: Tech</span>
+<span class="code-line">Subcategory: Blogging</span>
+<span class="code-line">Tags: pelican, python</span>
+<span class="code-line">Slug: pelican-setup</span>
+<span class="code-line"></span>
+<span class="code-line">[TOC]</span>
+<span class="code-line"></span>
+<span class="code-line">**Table of contents**</span>
+<span class="code-line"></span>
+<span class="code-line">[TOC]</span>
+<span class="code-line"></span>
+<span class="code-line">In this post it is documented how this blog was constructed using a static </span>
+<span class="code-line">site maker, meaning, there is no server-side processing of data.</span>
+</pre></div>
+<p>More details are available at the <a href="http://pelican.readthedocs.org/en/latest/quickstart.html">Pelican Documentation</a>
+website. The whole source of this website is uploaded to <a href="https://github.com/notionsandnotes/notionsandnotes.org">a github repository</a>
+where more examples and details may be found.</p>
+<p>After the articles or pages are edited, the compilation and static site generation are done by <code>make html</code>.
+Running <code>make devserver</code> will fire up a local server at <code>http://localhost:8000</code>, which can be used for
+pre-publication viewing. Note that this will require fixing up of the <code>pelicanconf.py</code> file in addition 
+to <code>publishconf.py</code> which was edited earlier. In particular, relative URLs to be enabled in pre-publication
+mode in order for us to be able to follow links in the browser. </p>
+<p>After viewing, <code>Ctrl + C</code> will stop the server and return to shell.</p>
+<p>For publication, run <code>make publish</code>, and later upload via <code>make rsync_upload</code>, which uploads only the
+necessary files using 
+<a href="https://www.digitalocean.com/community/tutorials/how-to-use-rsync-to-sync-local-and-remote-directories-on-a-vps">rsync</a> + ssh.</p>
+<hr/>
+<h3 id="screenshots">Screenshots:</h3>
+<hr/>
+<p>Here are the screen captures of a first built of this site with a (slightly modified) built-texts theme, with some 
+<a href="http://www.w3.org/Style/CSS/Overview.en.html">css</a> additions.
+The captures were done using a <a href="http://mrcoles.com/full-page-screen-capture-chrome-extension/">Google Chrome extension by Peter Cole</a>.</p>
+<p>Index page screenshot:</p>
+<p><a href="../../images/screenshot-index-bt.png"><img alt="index.html" src="../../images/screenshot-index-bt-thumb.png" style="width: 400px; height: auto;"/></a> 
+Click for expanding the thumbnail to actual size.</p>
+<p>Below is the next screenshot of how the article on Lebesgue measure and construction via Caratheodory extension theorem,
+was rendered. </p>
+<p><a href="../../images/screenshot-index-bt.png"><img alt="index.html" src="../../images/screenshot-lebesgue-bt-thumb.png" style="width: 400px; height: auto;"/></a>
+Click for actual size image.</p>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+   </div>
+
+</div>
+<footer>
+   <div class="container-fluid">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2015 George S.
+            &middot; <font size=1>Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a></font>              <p><small>  <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution 4.0 International License</a>, except where indicated otherwise.
+</small></p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="../../theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../../theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="../../theme/js/respond.min.js"></script>
+
+
+</body>
+</html>

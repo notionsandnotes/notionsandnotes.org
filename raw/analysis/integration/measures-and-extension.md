@@ -1,16 +1,12 @@
 Title: Lebesgue measure 
 Date: 2015-02-05 
+Modified: 2015-05-17
 Category: Analysis/Integration
-Tags: Real Analysis, Measure theory, Caratheodory extension, Sigma algebras, Measure spaces, Lebesgue measure, Complete measures
+Tags: Real Analysis, Measure theory, Caratheodory extension theorem, Sigma algebras, Measure spaces, Lebesgue measure, Complete measures
 Slug: measures-extension
 Series: Lebesgue Theory
 
 [TOC]
-
-**Table of contents**
-
-[TOC]
-
 
 -----------------------------
 
@@ -39,6 +35,7 @@ $\mathbb R$, satisfying the three properties above. Here we need to prove that s
 are the notions of `area` and `volume` defined when $X = \mathbb R^2$ and $X = \mathbb R^3$ respectively. In these cases also it is 
 to be proved that such an extended mapping satisfying the three properties as above can be constructed, meaning that each of these 
 constitute a measure, and this is the Lebesgue measure on $\mathbb R$ or on $\mathbb R^n$. 
+
 
  The goal of this article is to prove that Lebesgue measure exists for the one-dimensional case, i.e., on $\mathbb R$. First, we will 
 prove the slightly more general Caratheodory extension theorem, and then show that *length* satisfies the conditions necessary for 
@@ -113,7 +110,7 @@ $\ell$ is a `complex measure`. We restrict ourselves to positive measures in thi
 The measure on $X$ is called $\sigma$`-finite` if there exists a sequence $A_n$ of measurable sets each of finite measure, such that 
 $\cup_{n=1}^\infty A_n = X$.
 
-Let $X$ be a space. A function $\mu : @^X \to [0, \infty]$ 
+Let $X$ be a space. A function $\mu : 2^X \to [0, \infty]$ 
 
 When $\Sigma$ is replaced by an algebra $\cal A$ of sets, and if there is a set function on it satisfying the above two conditions
 whenever it makes sense, we still call it a measure on the algebra. In this case, we can extend the measure to the $\sigma$-algebra
@@ -137,18 +134,20 @@ Measure Theory,
 ### Bibliography
 -----------------------------
 
-The following are some books on measure theory:
+The following are some books on measure theory, sorted by alphabetical order of (first) author\\'s name.
 
-1.  K. B. Athreya and S. N. Lahiri, Measure Theory and Probability.
-1.  S. R. Athreya and V. S. Sunder, Measure and Probability.
-1.  V. I. Bogachev, Measure Theory. Vols. 1, 2.
-1.  J. L. Doob, Measure Theory.
-1.  H. Federer, Geometric Measure Theory.
-1.  D. H. Fremlin, Measure Theory, Vols, 1-5.
-1.  P. R. Halmos, Measure Theory.
-1.  O. Kallenberg, Foundations of Modern Probability.
-1.  P. Mattila, Geometry of Sets and Measures in Euclidean Spaces
-1.  L. Nachbin, The Haar Integral.
-1.  H. Royden, Real Analysis.
-1.  W. Rudin, Real and Complex Analysis.
+1.  K. B. Athreya and S. N. Lahiri, Measure Theory and Probability [![Buy this book from Amazon.com! Please follow through this Amazon Affiliate link. Support our site running expenses.]({filename}/images/amazon_24_black.png)](http://goo.gl/36NR9m)
+1.  S. R. Athreya and V. S. Sunder, Measure and Probability [![Amazon buy affiliate link. Support our site.]({filename}/images/amazon_24_black.png)](http://goo.gl/Nd2UYW)
+1.  V. I. Bogachev, Measure Theory. Vols. 1, 2. [![Amazon buy affiliate link. Support our site.]({filename}/images/amazon_24_black.png)](http://goo.gl/f95onH)
+1.  J. L. Doob, Measure Theory [![Amazon buy affiliate link. Support our site.]({filename}/images/amazon_24_black.png)](http://goo.gl/6QohkW)
+1.  H. Federer, Geometric Measure Theory [![Amazon buy affiliate link. Support our site.]({filename}/images/amazon_24_black.png)](http://goo.gl/mgwT4p)
+1.  D. H. Fremlin, Measure Theory, Vols, 1-5. [![Amazon buy affiliate link. Support our site.]({filename}/images/amazon_24_black.png)](http://goo.gl/167Qlr)
+1.  P. R. Halmos, Measure Theory [![Amazon buy affiliate link. Support our site.]({filename}/images/amazon_24_black.png)](http://goo.gl/FEr1Bs)
+1.  O. Kallenberg, Foundations of Modern Probability [![Amazon buy affiliate link. Support our site.]({filename}/images/amazon_24_black.png)](http://goo.gl/pD1hGw)
+1.  P. Mattila, Geometry of Sets and Measures in Euclidean Spaces[![Amazon buy affiliate link. Support our site.]({filename}/images/amazon_24_black.png)](http://goo.gl/YdcRCu)
+1.  L. Nachbin, The Haar Integral [![Amazon buy affiliate link. Support our site.]({filename}/images/amazon_24_black.png)](http://goo.gl/wupLDI)
+1.  H. Royden, Real Analysis [![Amazon buy affiliate link. Support our site.]({filename}/images/amazon_24_black.png)](http://goo.gl/YTsbh9)
+1.  W. Rudin, Real and Complex Analysis [![Amazon buy affiliate link. Support our site.]({filename}/images/amazon_24_black.png)](http://goo.gl/evzzpD)
+
+Terrence Tao's blog has [an article on outer measures, pre-measures and product measures](https://terrytao.wordpress.com/2010/10/30/245a-notes-6-outer-measures-pre-measures-and-product-measures/) in which he emphasizes Caratheodory extension and also another on [an alternate approach to the theorem](https://terrytao.wordpress.com/2009/01/03/254a-notes-0a-an-alternate-approach-to-the-caratheodory-extension-theorem/).
 
