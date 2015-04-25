@@ -20,7 +20,7 @@ TIMEZONE = 'Europe/Berlin'
 DEFAULT_DATE_FORMAT = '%d %B %Y'
 
 PLUGIN_PATHS = ['./plugins']
-PLUGINS = ['code_include','extract_toc','render_math','better_figures_and_images','series','related_posts','summary','better_codeblock_line_numbering']
+PLUGINS = ['code_include','extract_toc','render_math','better_figures_and_images','series','related_posts','better_codeblock_line_numbering']
 
 from markdown.extensions.codehilite import CodeHiliteExtension
 from markdown.extensions.toc import TocExtension
@@ -58,6 +58,10 @@ ARTICLE_URL = '{suburl}/{slug}.html'
 ARTICLE_SAVE_AS = '{subpath}/{slug}.html'
 CATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
 SUBCATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
+
+PLUGINS += ['summary']
+SUMMARY_BEGIN_MARKER = '<!-- PELICAN_BEGIN_SUMMARY -->'
+SUMMARY_END_MARKER = '<!-- PELICAN_END_SUMMARY -->'
 
 YEAR_ARCHIVE_SAVE_AS = 'posts/{date:%Y}/index.html'
 MONTH_ARCHIVE_SAVE_AS = 'posts/{date:%Y}/{date:%b}/index.html'

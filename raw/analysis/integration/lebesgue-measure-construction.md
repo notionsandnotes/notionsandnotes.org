@@ -3,7 +3,7 @@ Date: 2015-02-05
 Modified: 2015-05-17
 Category: Analysis/Integration
 Tags: Real Analysis, Measure theory, Caratheodory extension theorem, Sigma algebras, Measure spaces, Lebesgue measure, Complete measures
-Slug: measures-extension
+Slug: lebesgue-measure-construction
 Series: Lebesgue Theory
 
 [TOC]
@@ -14,6 +14,7 @@ Series: Lebesgue Theory
 
 --------------------------------------
 
+<!-- PELICAN_BEGIN_SUMMARY -->
  A positive measure on a measurable space $X$ is a device to "measure" sets belonging to a class $\Sigma$ of subsets of $X$. We define this as a 
 function $l : \Sigma \to [0, \infty]$ satisfying the following axioms:
 
@@ -26,8 +27,8 @@ function $l : \Sigma \to [0, \infty]$ satisfying the following axioms:
 set of $X$ and for any $A \subset X$, $l(A)$ = $|A|$ where $|A|$ denotes the cardinality of $A$, a finite number or infinity.
 
  One more easy example is the [`Dirac measure`](http://en.wikipedia.org/wiki/Dirac_measure). Here we choose a point $x \in X$, and, for 
-any subset $A \subset X$, we define $\delta_x(A) = 1$ if $x \in A$ and $0$ otherwise. This measure is related to the [`Dirac Delta 
-function`](http://en.wikipedia.org/wiki/Dirac_delta_function).
+any subset $A \subset X$, we define $\delta_x(A) = 1$ if $x \in A$ and $0$ otherwise. This measure is related to the 
+[`Dirac Delta function`](http://en.wikipedia.org/wiki/Dirac_delta_function).
 
  Next we consider [`Lebesgue measures`](http://en.wikipedia.org/wiki/Lebesgue_measure). An important model for abstract measures is 
 the notion of `length` of subsets of $X = \mathbb R$, first defined for intervals and then extended to a larger class of subsets or 
@@ -36,10 +37,10 @@ are the notions of `area` and `volume` defined when $X = \mathbb R^2$ and $X = \
 to be proved that such an extended mapping satisfying the three properties as above can be constructed, meaning that each of these 
 constitute a measure, and this is the Lebesgue measure on $\mathbb R$ or on $\mathbb R^n$. 
 
-
  The goal of this article is to prove that Lebesgue measure exists for the one-dimensional case, i.e., on $\mathbb R$. First, we will 
 prove the slightly more general Caratheodory extension theorem, and then show that *length* satisfies the conditions necessary for 
 its applications; thus we will have shown the existence of Lebesgue measure.
+<!-- PELICAN_END_SUMMARY -->
 
 The following two additional properties are satisfied for Lebesgue measures:
 
