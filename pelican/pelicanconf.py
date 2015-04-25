@@ -9,6 +9,7 @@ DELETE_OUTPUT_DIRECTORY = True
 
 AUTHOR = u'George S.'
 SITENAME = u'Notions and Notes'
+SITESUBTITLE = u'Notes on mathematical notions'
 SITEURL = 'http://www.notionsandnotes.org'
 
 EMAIL_ADDR = 'notionsandnotes at notionsandnotes dot org'
@@ -31,6 +32,9 @@ MD_EXTENSIONS = [
 
 TYPOGRIFY = True
 
+USE_OPEN_GRAPH = False
+
+
 PATH = '../raw'
 OUTPUT_PATH = '../www.notionsandnotes.org/'
 
@@ -52,15 +56,8 @@ SUBCATEGORY_SAVE_AS = 'category/{savepath}/index.html'
 SUBCATEGORY_URL = 'category/{savepath}/'
 ARTICLE_URL = '{suburl}/{slug}.html'
 ARTICLE_SAVE_AS = '{subpath}/{slug}.html'
+CATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
 SUBCATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
-SUBCATEGORY_FEED_RSS = 'feeds/%s.rss.xml'
-
-#PLUGINS = PLUGINS + ['custom_article_urls']
-
-#CUSTOM_ARTICLE_URLS = {
-#    'Analysis': {'URL': '{category}/{slug}/',
-#                 'SAVE_AS': '{category}/{slug}/index.html'},
-#    }
 
 YEAR_ARCHIVE_SAVE_AS = 'posts/{date:%Y}/index.html'
 MONTH_ARCHIVE_SAVE_AS = 'posts/{date:%Y}/{date:%b}/index.html'
@@ -81,6 +78,9 @@ sys.path.append(os.curdir)
 from themeconf import *
 
 ##########################
+
+TAG_CLOUD_STEPS = 4
+
 ##########################
 #######################
 #######################

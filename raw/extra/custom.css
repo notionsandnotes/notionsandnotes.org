@@ -4,8 +4,11 @@ body {
 }
 
 h1 {
-  font-family: 'Alegreya SC', 'Garamond', 'Georgia';
-  font-weight: normal;
+  font-variant: small-caps;
+}
+
+h2 {
+  font-variant: small-caps;
 }
 
 .entry-content p {

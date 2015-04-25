@@ -24,6 +24,7 @@ Here are some links filtered out from my bookmarks. Only those open to the publi
 * [Commutative Algebra](http://www.commalg.org/).
 * [Foliations](http://www.foliations.org/).
 * [LFMDB](http://www.lmfdb.org/), L-functions, modular forms database.
+* [Probability Web](http://probweb.berkeley.edu/)
 
 
 ###General
@@ -72,7 +73,7 @@ This list owes a great debt to the one hosted at the blog of [Terence Tao](http:
 
   
   
-####Algebra/General
+####Miscellaneous Categories
 ---------
 
 * [Automorphic forum](http://automorphicforum.wordpress.com/).
@@ -83,42 +84,56 @@ This list owes a great debt to the one hosted at the blog of [Terence Tao](http:
 ----------
 
 * [Terence Tao](http://terrytao.wordpress.com).
-* [Yannis Parissis](http://yannisparissis.wordpress.com/).
-* [Djalil Chafaï](http://djalil.chafai.net/blog/), Probability, etc.
+* [Yannis Parissis](http://yannisparissis.wordpress.com/)
+* [Marcelo de Almeida](https://nucaltiado.wordpress.com/)
+
+
+####Probability
+-------------
+* [Djalil Chafaï](http://djalil.chafai.net/blog/)
+* [Alexandre Thierry](https://linbaba.wordpress.com/)
+* [George Lowther](https://almostsure.wordpress.com/)
+* [Sebastian Bubeck](https://blogs.princeton.edu/imabandit/)
+* [Christian P. Robert](https://xianblog.wordpress.com/)
 
   
 ####Dynamics
 -----------
 
-* [Carlos Matheus](http://matheuscmss.wordpress.com/).
-* [Zhenghe Zhang](http://zhenghezhang.wordpress.com/).
-* [Pengfei Zhang](http://pfzhang.wordpress.com/).
+* [Carlos Matheus](http://matheuscmss.wordpress.com/)
+* [Zhenghe Zhang](http://zhenghezhang.wordpress.com/)
+* [Pengfei Zhang](http://pfzhang.wordpress.com/)
+* [Fabrice Baudoin](https://fabricebaudoin.wordpress.com/)
+* [Jérôme Buzzi](https://jbuzzi.wordpress.com/)
   
-####Geometry
+####Algebraic Geometry and Noncommutative Geometry
 ----------
 
 * [Stacks Project](http://math.columbia.edu/~dejong/wordpress/) of Aise Johan de Jong.
 * [Burt Totaro](http://burttotaro.wordpress.com/).
+* [David Mumford](http://www.dam.brown.edu/people/mumford/)
 * [Noncommutative Geometry](http://alexsisto.wordpress.com/).
 * [Lieven le Bryun](http://noncommutative.org/) and [Neverendingbooks](http://neverendingbooks.org).
 
   
-####Topology
+####Topology/Geometry
 -----------
 
-* [Low dimensional topology](http://ldtopology.wordpress.com/).
-* [392c Geometric Group Theory](http://392c.wordpress.com/).
-* [Alex Sisto](http://alexsisto.wordpress.com/).
-* [Floer Homology](http://floerhomology.wordpress.com/).
+* [Low dimensional topology](http://ldtopology.wordpress.com/)
+* [392c Geometric Group Theory](http://392c.wordpress.com/)
+* [Alex Sisto](http://alexsisto.wordpress.com/)
+* [Floer Homology](http://floerhomology.wordpress.com/)
+* [2011 Spring Bernstein Seminar](https://berstein.wordpress.com/)
+* [Danny Calegari](https://lamington.wordpress.com/)
 
 ####Number Theory
 - ---------------
 
-* [Matt Baker](http://mattbakerblog.wordpress.com).
-* [Mixedmath](http://davidlowryduda.com/) of David Lowry-Duda.
-* [Terence Tao](http://terrytao.wordpress.com) again.
-* [A mind for madness](http://hilbertthm90.wordpress.com), with a strong dose of algebraic geometry, philosophy and miscellany.
-* [Jordan Ellenberg](http://quomodocumque.wordpress.com/) with algebraic geometry and generalities.
+* [Harald Helfgott](https://valuevar.wordpress.com/)
+* [Matt Baker](http://mattbakerblog.wordpress.com)
+* [Mixedmath](http://davidlowryduda.com/) of David Lowry-Duda
+* [Terence Tao](http://terrytao.wordpress.com) again
+* [A mind for madness](http://hilbertthm90.wordpress.com), with a strong dose of algebraic geometry, philosophy and miscellany
 * [Lemma Meringue](http://lemmameringue.wordpress.com/).
-* [Lewko](http://lewko.wordpress.com/).
-
+* [Mark Lewko](http://lewko.wordpress.com/)
+* [Galois Representations](https://galoisrepresentations.wordpress.com/)

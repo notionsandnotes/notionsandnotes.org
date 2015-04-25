@@ -276,13 +276,13 @@ The captures were done using a [Google Chrome extension by Peter Cole](http://mr
 
 Index page screenshot:
 
-[![index.html]({filename}/images/screenshot-index-bt-thumb.png)]({filename}/images/screenshot-index-bt.png) 
+[![index.html]({filename}/images/screenshot-index-bt-thumb.png)]({filename}images/screenshot-index-bt.png) 
 Click for expanding the thumbnail to actual size.
 
 Below is the next screenshot of how the article on Lebesgue measure and construction via Caratheodory extension theorem,
 was rendered. 
 
-[![index.html]({filename}/images/screenshot-lebesgue-bt-thumb.png)]({filename}/images/screenshot-index-bt.png)
+[![index.html]({filename}/images/screenshot-lebesgue-bt-thumb.png)]({filename}images/screenshot-lebesgue-bt.png)
 Click for actual size image.
 
 
