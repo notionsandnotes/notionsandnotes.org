@@ -11,6 +11,17 @@ h2 {
   font-variant: small-caps;
 }
 
+h3 {
+  font-variant: small-caps;
+}
+
+#readmore {
+  font-size: 17px; 
+  font-weight: bold; 
+  color: #003380;
+  background-color: #CCFFCC;
+}
+
 .entry-content p {
   max-width: 500pt;
 }
@@ -27,6 +38,43 @@ a {
 
 #sidebar a {
   color: #2060A0;
+}
+
+/* for use with tag cloud plugin */
+
+ul.tagcloud {
+  list-style: none;
+    padding: 0;
+}
+
+ul.tagcloud li {
+    display: inline-block;
+}
+
+li.tag-1 {
+    font-size: 120%;
+}
+
+li.tag-2 {
+    font-size: 100%;
+}
+
+li.tag-3 {
+    font-size: 80%;
+}
+
+li.tag-4 {
+    font-size: 60%;
+}
+
+li.tag-5 {
+    font-size: 40%;
+}
+
+#bottom-data {
+    background-image: url(/images/academy-raphael.jpg);
+    background-size:   cover;  
+    background-repeat: no-repeat;
 }
 
 /* For use with the code_line-number_word-wrap_switcher_jquery.js Pelican plugin */

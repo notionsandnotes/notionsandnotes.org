@@ -1,9 +1,37 @@
 <footer>
-   <div class="container{% if BOOTSTRAP_FLUID %}-fluid{% endif %}">
+   <div class="container{% if BOOTSTRAP_FLUID %}-fluid{% endif %}" id="bottom-data">
+      <hr>
       <hr>
       <div class="row">
+          <div class="col-sm-3">
+           <h3><i class="fa fa-info-circle fa-lg"></i> Colophon</h3> 
+          </div>
+          <div class="col-sm-3">
+           <h4><i class="fa fa-tags fa-lg"></i>All Tags List</h4> 
+           <ul class="tagcloud">
+             {% for tag in tag_cloud %}
+              <i class="fa fa-tag"></i><li class="tag-{{ tag.1 }}"><a href="{{ SITEURL }}/{{ tag.0.url }}">{{ tag.0 }}</a></li>
+             {% endfor %}
+           </ul>
+          </div>
+          <div class="col-sm-3">
+           <h3><i class="fa fa-comments fa-lg"></i>Recent Comments</h3>
+                <script type="text/javascript" src="http://{{ DISQUS_SITENAME }}.disqus.com/recent_comments_widget.js?num_items=5&hide_mods=0&hide_avatars=0&avatar_size=32&excerpt_length=100"></script>
+          </div>
+          <div class="col-sm-3">
+            {% include 'includes/twitter_timeline.html' %}
+          </div>
+      </div>
+      <hr><hr>
+      <div class="row">
          {% if articles %}
-            {% set copy_date = articles[0].date.strftime('%Y') %}
+            {% set first_date = articles[0].date.strftime('%Y') %}
+            {% set last_date = articles[-1].date.strftime('%Y') %}
+            {% if first_date == last_date %}
+               {% set copy_date = first_date  %}
+            {% else %}
+               {% set copy_date = first_date + ' -- ' + last_date  %}
+	    {% endif %}
          {% else %}
             {% set copy_date = '' %}
          {% endif %}
