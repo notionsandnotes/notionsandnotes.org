@@ -1,4 +1,4 @@
-date: 2014-07-24
+date: 2015-04-30 22:05
 slug: math-links
 title: Mathematics Links
 tags: links, mathematics
@@ -66,7 +66,6 @@ We emphasize primarily open-source and free software here considering the financ
 
 #Blogs
 
-This list owes a great debt to the one hosted at the blog of [Terence Tao](http://terrytao.wordpress.com).
 
 ----------------------------------------
 ----------------------------------------

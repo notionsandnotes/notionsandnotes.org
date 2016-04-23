@@ -1,5 +1,6 @@
 Title: The long road to building a static blog with pelican
 Date: 2015-04-10 
+Modified: 2014-04-29
 Category: Tech/Web Development
 Tags: pelican, python, built-texts, pelican-bootstrap3, render_math, LaTeX, Barry Steyn, Jinja2, LaTeX in pelican index
 Slug: pelican-static-blog-setup
@@ -9,9 +10,9 @@ Status: published
 
 <!-- PELICAN_BEGIN_SUMMARY -->
 In this post it is documented how this blog was constructed as a static site, 
-meaning, the webpages are served from storage and not generated dynamially upon
-each visit using scripts(written for exmaple in [php](http://php.net)) and
-databases(e. g., [MySQL](https://mysql.com)).
+meaning, the webpages are served from storage and not generated dynamically upon
+each visit using scripts (written for example in [php](http://php.net)) and
+databases (e. g., [MySQL](https://mysql.com)).
 
 
 -----------------------------
@@ -31,7 +32,7 @@ manifestation of technophilia, a static blog was decided upon. There are many re
 which all basically comes down to simplicity, control, cost savings, and, 
 *because I can do it*.
 
-**The enviromnent issue**
+**The environment issue**
 
 In wordpress, everything is web-based, and the content storage, database and scripts are 
 all intermixed. Editing must take place in the wordpress editor or in custom 
@@ -42,7 +43,7 @@ on the content without any distractions, and if design is to be changed, it shou
 be doable without disturbing the content files.
 <!-- PELICAN_END_SUMMARY -->
 
-The architectural issue with wordpress etc. here is that they counfound the production and 
+The architectural issue with wordpress etc. here is that they confound the production and 
 development environments. These should ideally be separate for a neat workflow. Instead,
 the content writer is forced into undesired technical paraphernalia.
 
@@ -73,7 +74,7 @@ Outside the domain registration costs, the running costs come to less than $1
 per month, which is a great saving!
 
 This migration to static blogs is gaining more traction and it is increasingly
-more popular, especially among developers and hackers(the latter not meaning computer
+more popular, especially among developers and hackers (the latter not meaning computer
 security criminals, but, followers of [hacker news](https://news.ycombinator.com/)). 
 There are many static-site engines available by now, for example as described at
 [staticgen](https://www.staticgen.com/). 
@@ -128,7 +129,7 @@ Now we create the `virtualenv` named `pelican` for our blogging purposes.
     Installing setuptools, pip...done.
     (pelican)~$ 
 
-Note the change in the `bash` prompt. Use `workon` and `deactivate` to activate/deactive the python environment:
+Note the change in the `bash` prompt. Use `workon` and `deactivate` to activate/deactivate the python environment:
 
 
     :::console
@@ -216,7 +217,7 @@ in various subdirectories of the directory `raw`. The published site is stored u
 directory `www.notionsandnotes.org`. As mentioned earlier, `pelican` directory stores the files
 for pelican. So we have three subdirectories in total for the `blog` directory.
 
-Now set up these two additional directories and also initialize [git](http://git-scm.com/documentation) to enable version control and rollbacks(if required):
+Now set up these two additional directories and also initialize [git](http://git-scm.com/documentation) to enable version control and rollbacks (if required):
 
     :::console
     (pelican)~/work/blog$ mkdir www.notionsandnotes.org
@@ -293,7 +294,7 @@ Add in other parameters, such as the ssh hostname, as required.
 --------------------------------------
 
 
-First, enable the virtual environment 'pelican' using 'workon'(and remember to 'deactivate' it later.
+First, enable the virtual environment 'pelican' using 'workon' (and remember to 'deactivate' it later.
 Posts are created and edited using plain text editors in files with *.md extensions, in Markdown format.
 For example, these are the first few lines of the Markdown for this page:
 
@@ -333,7 +334,7 @@ necessary files using
 
 -----------------------------
 
-### Screenshots:
+### Screenshots
 
 --------------------------------------
 
@@ -354,7 +355,7 @@ was rendered.
 Click for actual size image.
 
 Once or twice for small customizations I got stuck and two guys in the [pelican IRC chat](https://botbot.me/freenode/pelican/)
-helped me out. Thanks, guys(if you are reading this)!
+helped me out. Thanks, guys (if you are reading this)!
 
 -----------------------------
 
@@ -377,6 +378,16 @@ Quite a good amount of tinkering was done to finally make this satisfactory. Whi
 of the older `built-texts` theme. A few additions were my own ideas, too, on top of existing changes done
 by others, among the foremost of which are [Tyler](https://github.com/tylerhartley/beneathdata) [Hartley's](http://beneathdata.com/) and 
 [Christine](https://github.com/chdoig/pelican-bootstrap3-lovers) [Doig's](http://chdoig.github.io) sites.
+
+The most important decision was to use the [Bootswatch](https://bootswatch.com/) theme [readable](https://bootswatch.com/readable/).
+This site is meant to be for expository and rigorous articles on pure mathematics and it is of foremost
+importance to ease the user's eye when staring the screen for a long time.
+
+There were a lot of settings for the `pelican-bootstrap3` scheme and these were pushed into a separate
+file `themeconf.py` and called via an `import` directive. So, in that file, the setting was:
+
+    :::python
+    BOOTSTRAP_THEME = 'readable'
 
 #### Menus
 
@@ -420,6 +431,10 @@ for each article in the indexes, different sidebar for pages, some font-awesome 
 glyphicon additions, etc.. This was altogether done in a haphazard manner as this 
 is my first encounter with any templating language. 
 
+The `readable` bootswatch theme had a problem, of having black links and so it was impossible to locate the links.
+So link colors were modified to a shade of blue using the `custom.css` file, which was included in `pelicanconf.py` 
+as `EXTRA_PATH_METADATA`. [Here](/custom.css) is the whole source.
+
 Some color and other style changes in were incorporated into `extra.css`.
 For example, the "more ..." button text for article summary ending in 
 indexes was highlighted and enlarged. In `templates/article_list.html`:
@@ -457,8 +472,9 @@ with one notable exception that required intervention of a professional develope
 
 -----------------------------
 
+This is supposed to be a pure mathematics blog, and so display of math is extremely important.
 
-When I intially made this blog, I used the [render_math](https://github.com/barrysteyn/pelican_plugin-render_math)
+It was implemented using the very helpful [render_math](https://github.com/getpelican/pelican-plugins/tree/master/render_math)
 plugin to display math. It made use of [MathJaX](https://www.mathjax.org/) to display mathematics encoded in the
 [LaTeX](http://www.latex-project.org/) typesetting markup language.
 
@@ -473,7 +489,7 @@ promptly and offered a solution, which he also said was not completely trivial l
 He kept to his word and [updated the plugin](https://github.com/barrysteyn/pelican_plugin-render_math) which I cloned
 and verified to be working.
 
-Thanks a lot, man!! This addition beautifies me(and this site) a lot, considering the future plans to upload many more Math articles.
+Thanks a lot, man!! This addition beautifies me (and this site) a lot, considering the future plans to upload many more Math articles.
 
 See also: [Barry Steyn's pelican LaTeX plugin page](http://doctrina.org/Plugin-For-Pelican-To-Enable-Latex.html).
 
@@ -482,18 +498,20 @@ See also: [Barry Steyn's pelican LaTeX plugin page](http://doctrina.org/Plugin-F
 ### Final comments
 -------
 
-It took altogether longer than expected, but was an intensive and beneficial(hopefully) journey. This page was titled, *Long Road*,
-to be reminiscent of [Grothendieck's Long March(http://webusers.imj-prg.fr/~leila.schneps/grothendieckcircle/LM/tableLM.pdf),
-but of course no claims to such greatness or even mere competence are made here!!
+It took altogether longer than expected, but was an intensive and beneficial (hopefully) journey. This page was titled, *Long Road*,
+to be reminiscent of [Grothendieck's Long March](http://webusers.imj-prg.fr/~leila.schneps/grothendieckcircle/LM/tableLM.pdf),
+but of course no claims to such greatness or even mere competence are made here!! And, as for the reference, this is 
+certainly meant to be a pure mathematics focus blog and one might go the whole mile and allude to mathematical references
+even in tech posts!
 
-This website domain was registered on an impulse on July 11, 2014, but due to intervening turbulence personal life,
+This website domain was registered on an impulse on July 11, 2014, but due to intervening turbulent personal life,
 it took me up to April 2015 to turn back to finally act upon site building. So, maybe, it was indeed a long march!
 
-Any suggestions for improvement are welcome, from web designers and pelican afficiados in particular. Thank you!
+Any suggestions for improvement are welcome, from web designers and pelican aficionados in particular. Thank you!
 
 ===========
 ===========
-###The end(Or is it?)
+###The end (Or is it?)
 ===========
 ===========
 

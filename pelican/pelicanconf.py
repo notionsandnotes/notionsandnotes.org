@@ -27,14 +27,15 @@ from markdown.extensions.toc import TocExtension
 MD_EXTENSIONS = [
     CodeHiliteExtension(css_class='highlight', linenums=False),
     TocExtension(),
+    'markdown.extensions.admonition',
     'markdown.extensions.extra',
 ]
 
 TYPOGRIFY = True
 
 
-PATH = '../raw'
-OUTPUT_PATH = '../www.notionsandnotes.org/'
+PATH = '../markdown'
+OUTPUT_PATH = '../www.notionsandnotes.org/public/'
 
 STATIC_PATHS = ['extra', 'images', 'pdfs']
 
@@ -57,6 +58,10 @@ CATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
 SUBCATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
 
 PLUGINS += ['render_math']
+MATH_JAX = {'align': 'left',
+            'indent': '2em',
+            'responsive': True,
+            'autoNumber': 'AMS'}
 
 PLUGINS += ['summary']
 SUMMARY_BEGIN_MARKER = '<!-- PELICAN_BEGIN_SUMMARY -->'

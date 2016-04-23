@@ -7,8 +7,8 @@ PELICAN=${PELICAN:-pelican}
 PELICANOPTS=
 
 BASEDIR=$(pwd)
-INPUTDIR=$BASEDIR/content
-OUTPUTDIR=$BASEDIR/output
+INPUTDIR=$BASEDIR/../markdown
+OUTPUTDIR=$BASEDIR/../www.notionsandnotes.org/public
 CONFFILE=$BASEDIR/pelicanconf.py
 
 ###

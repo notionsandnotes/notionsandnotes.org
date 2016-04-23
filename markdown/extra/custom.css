@@ -40,6 +40,62 @@ a {
   color: #2060A0;
 }
 
+/* For admonition Markdown extension */
+
+.admonition p.admonition-title + p {
+    display: inline;
+}
+
+.admonition p {
+    margin-bottom: 5px;
+}
+
+.admonition pre {
+    margin-bottom: 5px;
+}
+
+.admonition ul, .admonition ol {
+    margin-bottom: 5px;
+}
+
+p.admonition-title {
+    display: inline;
+    margin-right: 0;
+    font-weight: bold;
+    font-variant: small-caps;
+}
+
+p.admonition-title:after {
+    content: ":";
+}
+
+.note {
+    background-color: #eee;
+    border: 1px solid #ccc;
+}
+
+.seealso {
+    background-color: #ffc;
+    border: 1px solid #ff6;
+}
+
+.topic {
+    background-color: #eee;
+}
+
+.warning {
+    background-color: #ffe4e4;
+    border: 1px solid #f66;
+}
+
+.warning tt {
+    background: #efc2c2;
+}
+
+.note tt {
+    background: #d6d6d6;
+}
+
 /* for use with tag cloud plugin */
 
 ul.tagcloud {

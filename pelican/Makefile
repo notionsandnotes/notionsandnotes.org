@@ -3,7 +3,7 @@ PELICAN?=pelican
 PELICANOPTS=
 
 BASEDIR=$(CURDIR)
-INPUTDIR=$(BASEDIR)/../raw
+INPUTDIR=$(BASEDIR)/../markdown
 OUTPUTDIR=$(BASEDIR)/../www.notionsandnotes.org/public
 CONFFILE=$(BASEDIR)/pelicanconf.py
 PUBLISHCONF=$(BASEDIR)/publishconf.py
