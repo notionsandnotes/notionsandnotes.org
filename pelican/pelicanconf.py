@@ -5,12 +5,10 @@ from __future__ import unicode_literals
 import os
 import sys
 
-DELETE_OUTPUT_DIRECTORY = True
-
 AUTHOR = u'George S.'
 SITENAME = u'Notions and Notes'
 SITESUBTITLE = u'Notes on mathematical notions'
-SITEURL = 'http://www.notionsandnotes.org'
+SITEURL = 'https://www.notionsandnotes.org'
 
 EMAIL_ADDR = 'notionsandnotes at notionsandnotes dot org'
 
@@ -20,13 +18,13 @@ TIMEZONE = 'Europe/Berlin'
 DEFAULT_DATE_FORMAT = '%d %B %Y'
 
 PLUGIN_PATHS = ['./plugins']
-PLUGINS = ['code_include','extract_toc','better_figures_and_images','series','related_posts','better_codeblock_line_numbering']
+PLUGINS = ['code_include','extract_toc','series','related_posts','better_codeblock_line_numbering']
 
 from markdown.extensions.codehilite import CodeHiliteExtension
 from markdown.extensions.toc import TocExtension
 MD_EXTENSIONS = [
     CodeHiliteExtension(css_class='highlight', linenums=False),
-    TocExtension(),
+    TocExtension(anchorlink=True),
     'markdown.extensions.admonition',
     'markdown.extensions.extra',
 ]
@@ -37,7 +35,7 @@ TYPOGRIFY = True
 PATH = '../markdown'
 OUTPUT_PATH = '../www.notionsandnotes.org/public/'
 
-STATIC_PATHS = ['extra', 'images', 'pdfs']
+STATIC_PATHS = ['extra', 'images', 'pdfs', 'cgi-automata']
 
 EXTRA_PATH_METADATA = {
     'extra/robots.txt': {'path': 'robots.txt'},
@@ -45,6 +43,11 @@ EXTRA_PATH_METADATA = {
     'extra/htaccess': {'path': '.htaccess'},
     'extra/custom.css': {'path': 'custom.css'},
 }
+
+PLUGINS += ['liquid_tags.figure']
+PLUGINS += ['liquid_tags.amazon']
+PLUGINS += ['liquid_tags.youtube']
+SUMMARY_MAX_LENGTH = None
 
 PLUGINS += ['subcategory']
 CATEGORIES_SAVE_AS = 'categories.html'
@@ -69,7 +72,12 @@ SUMMARY_END_MARKER = '<!-- PELICAN_END_SUMMARY -->'
 
 PLUGINS += ['tag_cloud']
 TAG_CLOUD_STEPS = 5
-TAG_CLOUD_SORTING = 'size-rev'
+TAG_CLOUD_BADGE = True
+
+PLUGINS += ['pelican_comment_system']
+PELICAN_COMMENT_SYSTEM = True
+PELICAN_COMMENT_SYSTEM_IDENTICON_DATA = ('author','email')
+PELICAN_COMMENT_SYSTEM_IDENTICON_SIZE = 75
 
 YEAR_ARCHIVE_SAVE_AS = 'posts/{date:%Y}/index.html'
 MONTH_ARCHIVE_SAVE_AS = 'posts/{date:%Y}/{date:%b}/index.html'

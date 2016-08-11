@@ -1,0 +1,384 @@
+
+\documentclass[fleqn,a4paper]{SelfArx}
+
+\usepackage{url}
+\usepackage{amsmath}
+
+\setlength{\columnsep}{0.55cm} 
+\setlength{\fboxrule}{0.75pt} 
+
+\definecolor{color1}{RGB}{0,0,90}
+\definecolor{color2}{RGB}{0,20,20} 
+
+\usepackage{hyperref} 
+\hypersetup{hidelinks,colorlinks,breaklinks=true,urlcolor=color2,citecolor=color1,linkcolor=color1,bookmarksopen=false,pdftitle={Title},pdfauthor={Author}}
+
+\JournalInfo{Wisilica India Inc., March 2015} 
+\Archive{Design Notes}
+
+\PaperTitle{Possible Routing Algorithms for BLE -- A comparison}
+
+\Authors{George Scaria*}
+\affiliation{*\textbf{e-mail}: george.scaria@gmail.com}
+
+\Keywords{Bluetooth Low Energy, network, routing, algorithms.} 
+\newcommand{\keywordname}{Keywords}
+
+\Abstract{Wisilica's proposed WiSe Mesh design has to deal with the problem of constructing a wireless network consisting of communicating 
+Bluetooth Low Energy(BLE) devices, subject to the following constraints: 1. The mesh nodes should not contain any static route information,
+2. The creation and realignment algorithms should be dynamic, and, 3. The mesh nodes should be able to communicate each other securely. In
+this document we look at some existing routing algorithms, originally designed for earlier types of networks, but also having potential for 
+adaptability for BLE.We summarize the problem and discuss possible algorithmic solutions. The first section is a statement of the design problem.
+Section $2$ is a little involved algorithmics. Section $3$ is speculation for future steps and final solution.}
+
+\begin{document}
+
+\flushbottom 
+
+\maketitle 
+
+\tableofcontents 
+
+\thispagestyle{empty} 
+
+\section{The BLE routing problem} % The \section*{} command stops section numbering
+
+\subsection{Description of WiSe Mesh Technology}
+
+\par Wisilica's technology automates electric devices in homes, offices and other buildings using Bluetooth Low-Energy(BLE)
+sensors and controllers. The user accesses and controls these using smartphone apps. Also the WiSe Mesh is connected
+to internet and a cloud storage mechanism for logging, backup and other purposes. The range of 
+low energy bluetooth is around $10$ meters. So direct communication is not always possible with the electrical 
+device that the smartphone desires to probe or control, and communication is established via other intermediate BLE
+devices in between the smartphone and the destination. So the BLE devices not only trasmit/receive their own data, 
+but also act as conduit of data for neighboring nodes too. Refer figure \ref{fig:wisilicamesh} for a graphical illustration
+and to \cite{Haatanen:2012thesis} for a simplistic description of BLE and a possible mesh setup.
+
+\begin{figure*}[ht]\centering % Using \begin{figure*} makes the figure take up the entire width of the page
+\includegraphics[width=\linewidth]{mesh-5.jpg}\caption{Smartphone operating a device(Source: \href{http://wisilica.com/wise-mesh.html}{Wisilica website})}
+\label{fig:wisilicamesh}
+\end{figure*}
+
+\par The classical Bluetooth networks transmit/receive data in master or slave modes. In networks formed of such devices,
+it is a natural first step to elect local leaders and connect other nodes to them. 
+
+\par In the BLE technology however, devices can transfer data via two methods, firstly, in small pieces as part of 
+other data in advertisement mode, or, in a client/server or slave/master setup in which the client reads data from 
+and also writes to the server. As an in-situ engineering decision specific to the WiSe Mesh, only communication in the
+advertisement mode is used. 
+Consequently, all the nodes have a prior the same status and one can do data traffic control at a higher communcation
+layer.
+
+\subsection{Discussion of the routing problem}
+\vskip 1em
+
+\par So far the existing BLE networking technologies do not seem to do much serious routing, and seem to confine themselves
+to some local leader election and broadcast of all messages to all nodes. This limits the maximum possible number of
+devices in such a network due to the wireless bandwidth restrictions. To be able to use more devices, as Wisilica plans,
+somwhat more effective planning is called for. There is already some work from the past for similar situations. 
+In particular, the routing problems considered from the time of ARPANET onwards
+addresses exactly this problem. These cannot be used in exactly the given form as BLE technology differs from earlier
+wireless networks. Nevertheless they can built upon saving a lot of work in the present situation.
+
+\par We discuss the situation in a little more detail below.
+
+\par During operation most of the nodes of the network are passive and listening for transmission, and
+when a node becomes active and sends data, it is available to all of its passive/listening neighbors. Thus the 
+nodes are not connected to one another per se. The advertising node and its neighbors form a star shape network for
+the moment, and we have to join together and manage transmission through such transcient links in order to 
+route data effectively.
+
+\par So we have to form an ad-hoc wireless network each time. A mitigating factor however is that the Wisilica network
+is mostly static, and addition or deletion of nodes is a relatively rare even.
+
+\par This is an ideal scenario for using multi-hop packet routing. A simplistic method to ensure transmission of
+packets is the following: each node after a certain delay re-transmits each uniquely identified packet that
+it receives. So the packet will eventually reach all the nodes that are connected to the originator either directly, 
+or through multiple intermediaries. The drawback here is that there will be many unnecessary repeated re-transmissions
+of the same packet, and it will hog the network bandwidth and as the number of devices go up, such congestion
+will make the network inoperable. Therefore more efficient traffic directing and routing procedures are required.
+
+\par A very crucial constraint is that each node can communicate directly only with its immediate neighbors, and also each
+node has some limited computational power and limited memory. In fact, the whole software has only about $64kB$ to reside
+and the dynamic memory available will be limited to a few $kBs$, which itself we would seek to reduce.
+ So, while we may use distributed algorithms, the
+resources available to such algorithms at each node are very limited and we really need to optimize.
+
+\par Therefore in addition to a problem in algorithmics, the network design also involves a decision of engineering tradeoff 
+between using the most efficient algorithms and memory limitations. 
+
+\subsection{The problem of collision}
+
+\par It may so happen that two nodes may transmit over the same channel at once and the data from both get lost. To 
+avoid this, we assume a simple strategy using small random delays before transmission and re-transmission upon
+detection of collision. In what follows, we discuss both deterministic and nondeterministic algorithms, and for the
+deterministic algorithms, we consider the collision problem already dealt with at the engineering level itself.
+
+%------------------------------------------------
+
+\section{Candidate Algorithms}
+\vskip 1em
+    We only consider easily obtained and public-domain algorithms, to keep things simple, and since the ultimate 
+cutting-edge results are not expeceted to be required at this stage of the engineering design problem.
+
+\subsection{Algorithms from college CS}
+\vskip 1em
+   These are usually studied in a basic Data Structures/Algorithms course or a Graph Theory course. These can't be used 
+in their given form here and are merely reproduced for simpler stepping stones for understanding more sophisticated techniques.
+For a refresher of DS/Algorithms, refer to the book \cite{Mehlhorn:2008Sanders}.
+
+\par A network is modelled as a graph with a finite number of vertices(nodes) with edges(links) between them, with weights(distance)
+attached to them. The graphs may be directed or undirected. In all what follows, $G = (V, E)$ is a graph which for simplicity may be
+assumed to be connected, with $V$ the set of vertices and $E$ the set of edges. $n$ is the number of vertices and $\bar{d}$ is
+an upper bound on the degree of the vertices, i. e., number of vertices to which the given vertex is connected.
+
+\subsubsection{The Minimal Spanning Tree problem}
+\vskip 1em
+
+\par  This asks to find a minimal connected subgraph which also connects all vertices; in other words we have to find a spanning
+tree(a graph without cycles). Once formed, the tree can be used as a backbone for all communications and internal nodes of the 
+tree can be the leaders. Every message is sent through the tree.
+
+\par Following is a summary of Kruskal's algorithm which is generally used for this problem. More details can be found in \cite{Kruskal:1956a}. Start with an empty tree(or, ``forest'', a disjoint union of trees) 
+$T$ in $G$. Let $S$ be initially equal to the set of all edges $E$. The algorithm runs as follows. 
+While $S$ is nonempty and $T$ is non-spanning, repeat adding an edge to $T$ 
+such that no cycle is formed, and the edge added is of minimal weight among all possible candidates, and we remove this edge from the set $S$.
+
+\par If the graph has $\bar{E}$ edges, then Kruskal's algorithm has complexity $\mathcal{O}(\bar{E} \log\ \bar{E})$.
+
+\par Kruskal's algorithm was described above due to its simplicity and usually Prim's algorithm is used instead.
+The problems with using Kruskal's or similar Minimal Spanning Tree algorithms for WiSe Mesh are the following. One, each node is 
+aware only of its neighbors and Kruskal's algorithm needs the data of the full network topology as its input. Second, short-sized 
+networks, such as clustered BLE lights, fans and sensors in a room, have plentiful interconnections with one other, and thus their 
+graph does not have a natural tree structure and using a tree 
+as backbone for communications becomes inefficient.
+
+\par Nevertheless the MST problem is very relevant for our discuss. The network may have a tree-like structure at a higher level. 
+For instance, a building may be divided into rooms, floors etc., and the sensors/controllers grouped accordingly.
+In trees, the system memory requirements are going to be much less and the routing tables are simplistic. 
+Finally, for operations requiring broadcast of a message to all nodes, the MST is a very suitable approach.
+
+\subsubsection{The Tree searching problem}
+\vskip 1em
+\par The point of finding a minimal spanning tree is that generally search within trees is more efficient than search in general graphs. 
+Suppose an MST is found using some algorithm. As the next step we have to address the problem of how to send data 
+from one node inside the tree to another. There are a number of algorithms for this purpose. We choose interval routing for solving
+this problem. It is a method without any routing tables. The kernel of the idea is already in the topic of ``binary search trees'' 
+studied in Data Structures/Algorithms course. Interval Routing is detailed in \ref{introuting}.
+
+\subsubsection{The Shortest Path Problem}
+
+\par Here the goal is to compute the shortest paths between any two vertices in a weighted, and let's say for simplicity, undirected graph. This problem
+reduces to the problem of finding all shortest paths to other vertices from a single source vertex, and results in a shortest path tree from the
+source node.
+
+\par One important algorithm for this problem is Dijkstra's algorithm and the following is a summary; for more details refer to \cite{Dijkstra:1959a}.
+This is a relaxation-type algorithm; that is to say, we first let the algorithm break our target criterion, and from this initial solution, we reimpose the constraint and converge to a desired solution.
+
+\par The Dijkstra algorithm runs as follows. We consider a set \texttt{TreeSet} consisting of shortest path trees from a fixed source node; 
+that is to say, 
+the list of vertices in the shortest path are having the minimum distance each time. Initially, this set is the null set.
+A distance value $D(I)$ is assigned to each vertex $I$ in the graph; intially the source vertex is set to distance $0$ and all others infinity. 
+While the \texttt{TreeSet} is non-spanning, the algorithm executes the following things: Pick a node $N$ that is not in \texttt{TreeSet} 
+and such that its distance(distance along the tree) is minimal among all possible such $N$, 
+and include $N$ into \texttt{TreeSet}. 
+Now update $D(M)$ for all nodes $M$ adjacent to $N$ as follows. If $D(M) > D(N) + \mathrm{weight}(\mathrm{edge}\ N-M)$, then set $D(M)$ 
+to the RHS of this expression.
+
+\par If $N$ is the number of nodes, then Dijkstra's algorithm has complexity $\mathcal{O}(N^2)$.
+
+\subsection{Distributed Algorithms}
+
+ Although the two problems given above form the skeleton of our design issue, we have to consider the lack of knowledge of larger topology.
+Here we can take advantage of the existence of a processor at each node, and run a distributed algorithm. A routing table is maintained at each node.
+
+\subsubsection{MST : Gallagher - Humblet - Spira}
+
+\par The G-H-S algorithm is similar to Kruskal's, though run in parallel in each node. It appeared in \cite{Gallager:1983HumbletSpira}. We 
+do not explain the nitty-gritties here and confine ourselves to an outline. We start with each node as a one node fragment. Then in 
+each fragment, the nodes run a distributed computation to find the lowest-weight outgoing edge. Using such an edge, two neighboring
+fragments can be combined. The algorithm stops when only one fragment is remaining, i. e., the fragment spans all vertices.
+
+\par If $N$ is the number of nodes and $E$ the number of edges, the communication complexity is of order $\mathcal{O}(N\log N + E)$. 
+Time complexity is $\mathcal{O}(N \log N)$.
+
+\par There is another algorithm due to Awerbuch, \cite{Awerbuch:1987} that improves on G-H-S.
+
+\par The problem here is the following. Recall that the WiSe Mesh is only \emph{mostly} static. When the topology changes, the MST
+becomes invalid. The na\"ive solution here is to recompute the MST once again. But if the node remains mobile, this may get problematic.
+There do exist adaptive algorithms that efficiently recompute MSTs upon deletion or insertion of node or link. But all the ones
+found so far in literature are centralized and not distributive. More attention needs be given to this problem later.
+
+\subsubsection{Interval Routing}\label{introuting}
+
+\par Interval routing methods either does not require or uses only small routing tables. For trees, the method is as follows. First, use 
+a depth-first search(DFS)(refer to \cite{Knuth:1997} for details) traversal of the tree and give labels to all nodes in a 
+linearly ordered set, in the following way. First, let the root get the label $0$. After traversal, label successive nodes as $1, 2, 4, \ldots , N$. 
+Then, let us call unidirectional links as ``ports''. For each node, label the port towards the child by the node number of the child.
+Then, label the port towards the parent by $L(I) + T(I) +1\ \mathrm{mod}\ N$, where $L(I)$ is the label of the node $I$, and $T(I)$ is the
+number of nodes in the subtree under node $I$, excluding $I$.
+
+\par Now, the routing decision takes place as follows. At node $I$, order the ports linearly and subdivide into intervals of the form $[p, q)$,
+defined as follows.  For a set of $N$ nodes $0, 1, \ldots , N-1$, the interval $[p,q)$ between $p$ and $q$ is defined as: if $p<q$ then 
+$p, p+1, \ldots , q-1$, and if $p \geq q$, then, $p, p+1, \ldots , N-1, 0, \ldots , q-1$. Determine the interval $[p,q)$ to which a given 
+destination belongs and send the packet via the port $p$.
+
+\par This works exceptionally well in trees, and without any routing table at all. A report on Interval Routing schemes is \cite{Gavoille:1997LaBRI}.
+
+\subsubsection{Bellman-Ford algorithm}
+
+\par Bellman-Ford is the most used algorithm for routing in networks in one adaptation or the other. It uses routing tables. 
+
+\par The philosophy behind the algorithm is: ``An optimal policy has the property that whatever the initial state and initial decision are, the remaining decisions must constitute and optimal policy with regard to the state resulting from the first decision'', cf. \cite{Bellman:1957}, p. 87..
+
+\par The setup is as follows.
+The algorithm operates on a connected weighted graph. Negative edge weights are allowed; but the original Bellman-Ford algorithm converges
+if they are disallowed. The computation runs on each node. Each node maintains a routing table and a neighbor table. The routing table at node $I$
+consists of upper-bound estimates of distances $D_I(J)$ to all nodes $J$. At each loop of the algorithm, the entries of this table are transmitted
+to its neighbors. The receiving nodes store this latest value in their neighbor table, which, at node $I$, consists of entries such as 
+$N_I(J,P)$ where $J$ is a node and $P=(I, M)$ is an edge from node $I$ to its neighbor $M$.
+
+\par The procedure of the algorithm is as follows. 
+\begin{itemize}
+\item The running is in parallel at each node and asynchrounous. 
+\item At node $I$, intially all values of $D_I(J)$ is set equal to $\infty$ when $I \neq J$, meaning all links are down, and $D_I(I)$ is set to $0$. \item Whenever a link adjacent to a node $I$ goes up, node $I$ sends records of the form $(I, D_I(J))$ for all nodes $J$, over this new link.
+\item Suppose a node $I$ recives over a link $P$ a pair $(J, L)$ where $J$ is a neighbor of $I$. Then $N_I(J, P)$ is set to $L$ and $D_I(J)$
+is recomputed as $\underset{p}{\mathrm{min}}\ N_I(J,p) + Len(p)$. If this results in a new value, the record $(J, D_I(J))$ is sent to all 
+neighbors of $I$.
+\item If a link at a node $I$ goes down, or in more general situation if the length of the link changes, the same computation is performed 
+at $I$ for all nodes $J \neq I$.
+\end{itemize}
+
+For convergence, sometimes upper bounds are imposed on maximum number of nodes and in general situation, length of links.
+
+\par The Bellman-Ford algorithm is particularly suitable for our situation for small networks thanks to its distributed processing and automatic
+re-adjustment of routing tables whenever the network topology changes. 
+
+\par For the Single Destination Shortest Path problem, the B-F algorithm has computation complexity of $\mathcal{O}(\bar{d}n)$ and
+$\mathcal{O}(n)$ respectively. For the all-pairs shortest path problem, B-F has computation complexities of $\mathcal{O}(\bar{d}n^2)$ 
+and $\mathcal{O}(n^2)$ respectively. These complexities may not be a huge problem for network operation as the algorithm runs
+only when network topology changes.
+
+\par On the other hand, the memory considerations are a problem. The routing table at each node would have size $\mathcal{O}(n)$ and the 
+neighbor table would grow as $\mathcal{O}(\bar{d}n)$. Due to our severe memory constraints, this limits the use of B-F algorithm for us.
+We recommend that it be tested and used for smaller-level networks.
+
+\par There is also an adaptive distributed Dijkstra algorithm due to Humblet, published in \cite{Humblet:1988}.
+
+\subsection{Non-deterministic Algorithms}
+
+\par Deterministic algorithms are those that always give the same output for a given fixed input. Non-deterministic algorithms are those
+that behave otherwise. This could possibily be because there is some randomness at some step in the algorithm.
+
+\par Were the network wholly mobile, that is to say, consisting of nodes that may be in motion at any time, then non-deterministic algorithms
+would work better than deterministic algorithms. For example, we can employ stochastic routing, random walk on the wireless mesh, etc.,
+and these might well be the best available techniques in practice.
+
+\par However, the WiSe Mesh is \emph{mostly fixed}, and so the stochastic methods are not the best, and we do not enter into that discussion.
+We set hopes to be able to solve the issue of very limited mobility by other means.
+
+\par Nevertheless, for optimal considerations, some nondeterministic algorithms still might find a role -- for example, there are many high
+performing ND-Algorithms for the graph search problems. We do not get into those either at the moment.
+
+\subsection*{}
+
+A general reference for the topics of this section is \cite{Ghosh:2007DS}.
+
+\section{Testing and final development}
+
+\par Our analysis here so far was based on published data in scientific papers and books on the aforementioned algorithms. It still remains
+to determine the final setup from all this in order to maximize the bandwidth usage. For a more definite study, one would need to apply
+the principles of the subject of network flow theory(refer to \cite{Ford:62Fulkerson} for the subject); but the effort required to study
+an unfamiliar topic may not yield a worthy result when compared to the possibility of doing practical experiments via simulation and collecting 
+data and studying.
+Therefore we eschew the theoretical method for performance studies and use the practical one instead. However if really required, the 
+methods of network flow theory may be used.
+
+\par Having decided on simulation, the aforementioned algorithms need be written in an actual programming language and run for testing. 
+Pseudocode can be obtained from many
+sources, for example, from books and from the internet. 
+
+\par The end-result cannot be determined with certainty at this early stage. We would like to simulate and see the performance of bite-sized
+chunks of what has been described so far in this document. Some combination is expected to work in the end; exactly which one it is depends
+on the experiments outputs.
+
+\par For the experienced programmer who is but new to algorithmic and systematic practical programming techniques,
+a good reference to refer to and meditate upon is Dijkstra's ``A discipline of programming'', \cite{Dijkstra:75Discipline}. 
+
+\subsection{Framework and modelling for testing}
+
+\par Once a framework is made in a high-level language for simulation of a WiSe Mesh using BLE devices, we can use it to examine the performance
+of one algorithm after the other. By either intentional slowing or explicit time computation, and examination of memory allocation, 
+the engineering team can find out the operational limits of each particular algorithm in each particular network topology. 
+
+\par A collection of network topologies is also required. Scalable trees, pancake graphs, rings, complete graphs, lattices, cubes, overlaying cubes, 
+star graphs etc. are some possibilities, before some good amount of actual graphs of WiSe Mesh implentations are available.
+
+\par If a programmer with skill for visualization is avaiable, then a graph visualization program could be written and we could also visually
+examine convergence and speed of the algorithms. However, intially we would simply restrict ourselves to a high-level language like Python or SciLab.
+
+\subsection{Implementation for small cluster networks}
+
+\par The first thing to be implemented is a demonstration of Kruskal's algorithm. This will help to develop the simulation framework in a very
+simple situation.
+
+\par Our recommended choice for small cluster networks is the Bellman-Ford algorithm. It is suggested that the simulation be done 
+for incremental number of nodes and data be obtained for determining the maximum possible size for operation.
+
+\par Bellman - Ford pseudocode and C code are availabe at Github, refer \cite{Lu:Github}. A better rendition and an illustration are available at
+\cite{Micka:algoritmy}.
+
+\subsection{Implementation for tree networks}
+
+Simulation is to be done for small to moderate sized tree networks for Minimal Spanning Tree and Interval Routing. 
+
+For tree networks, a suitable MST algorithm in addition to what was described earlier is Chang's echo algorithm. See \cite{Chang:1982Echo} for
+details. For interval routing, more sophisticated techniques are available in papers such as \cite{Leeuwen:1985Tan}, \cite{Fraigniaud:1998Gavoille}. 
+These may be examined and used if necessary.
+
+Earlier we had required for interval routing that tree networks such as MSTs be used, or at any rate that the network be static. However
+Wisilica's WiSe Mesh may not be entirely static and this is a huge problem for usng interval routing compared to Bellman-Ford type algorithms.
+Nevertheless, some work had been done recently on interval routing on dynamic trees, such as in \cite{Korman:2009} and this needs
+to be examined later for feasibility.
+
+\subsection{Modelling for large networks}
+
+First an algorithm needs to be fixed. The approaches to be attempted here are three.
+
+\textbf{Combination of Bellman-Ford and interval routing}: We subdivide the network into a tree structure at the large scale and do
+interval routing, and and at small scale we use Bellman-Ford routing. How to combine the two is a problem that needs to be addressed
+later.
+
+\textbf{Antonio-Huang-Tsai Algorithm}: This algorithm, published in \cite{Antonio:1992HuangTsai}, is for hierarchically clustered
+data networks, in fact for the precise type of network that WiSe Mesh forms. In the general case, it gives performances better 
+than Bellman-Ford algorithm. As this algorithm is very promising, it needs to be studied for feasibility and tested. However, a 
+prior testing of simpler algorithms such as B-F will make it a natural progression and therefore we postpone this to a later stage.
+
+\textbf{Prefix routing}: Similar to interval routing, for large networks such as P2P networks, there is a method called Prefix Routing which we haven't studied yet. It uses small routing tables and is
+extremely scalable, and is very suitable for situations where nodes and links can appear and disapper. There are key and hash-table
+based algorithms whose complexity grows very satisfactorily; in fact, logarithmically. However we need to study the technology and 
+algorithms in detail and whether it is suitable for implementation within our $64$kB memory limits.
+
+It is also possible that as work proceeds, previously unnoticed methods from the literature may come to our attention, either by
+itself or for solving some particular issue that pops up during practial implementation. As it is yet some way ahead, we do not 
+speculate on it now.
+
+%------------------------------------------------
+\phantomsection
+\section*{Acknowledgments} 
+
+\addcontentsline{toc}{section}{Acknowledgments} 
+The problem was posed to the author by Suresh Singamsetty via Shiju Sasi. Moreover at team Wisilica, Charles M and Sarin M. S.
+provided description and data about Wisilica WiSe Technology.
+
+%----------------------------------------------------------------------------------------
+%	REFERENCE LIST
+%----------------------------------------------------------------------------------------
+\phantomsection
+
+\bibliographystyle{alpha}
+\bibliography{wisilica}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}

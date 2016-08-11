@@ -1,41 +1,153 @@
-{% if DISQUS_SITENAME %}
+{% if PELICAN_COMMENT_SYSTEM %}
+<section id="pcs-comments">
+  <header>
+    <h3>Comments</h3>
     <hr/>
-    <section class="comments" id="comments">
-        <h2>Comments</h2>
+  </header>
+  {% if article.comments %}
+    <ul class="media-list">
+    {% for comment in article.comments recursive %}
+      <li id="comment-{{comment.slug}}" class="media">
+          <div class="pull-left">
+            <img class="media-object" src="{{ SITEURL }}/{{ comment.avatar }}" alt="Avatar" height="{{ PELICAN_COMMENT_SYSTEM_IDENTICON_SIZE }}" width="{{ PELICAN_COMMENT_SYSTEM_IDENTICON_SIZE }}">
+          </div>
+          <div class="media-body">
+            <h5 class="media-heading">
+            {% if comment.metadata['website'] %}
+          	  <a href="{{comment.metadata['website']}}">{{ comment.author }}</a>
+          	{% else %}
+          	  {{ comment.author }}
+          	{% endif %}
+          	</h5>
+            <div class="pull-right">
+              <a role="button" class="btn btn-sm btn-secondary" href="{{ SITEURL }}/{{ article.url }}#comment-{{comment.slug}}" rel="bookmark" title="Permalink to comment"><i class="fa fa-link"></i>Permalink</a> 
+              <button class="btn btn-sm btn-secondary" onclick="CommentSystem.setReply('{{comment.slug | urlencode}}', '{{comment.author | urlencode}}');"><i class="fa fa-reply"></i>Reply</button>
+          	</div>
+            <p class="text-muted">
+            {% if comment.metadata['posted-url'] %}<a href="{{comment.metadata['posted-url']}}">{% endif %}
+              Posted on <time datetime="{{ comment.date.isoformat() }}" title="{{ comment.date.isoformat() }}">{{ comment.locale_date }}</time>
+            {% if comment.metadata['posted-url'] %}</a>{% endif %}
+            </p>
+            <div class="pcs-comment-content" {# class used as id in comments.js#}>
+	            {{ comment.content }}
+	          </div>
+	          {% if comment.replies %}
+              <hr>
+	            <ul>	{{ loop(comment.replies) }}  </ul>
+	          {% endif %}
+	        </div>
+      </li><hr>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no comments yet.</p>
+  {% endif %}
 
-        <div id="disqus_thread"></div>
-        <script type="text/javascript">
-            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-            var disqus_shortname = '{{ DISQUS_SITENAME }}'; // required: replace example with your forum shortname
+	<section>
+	<form id="pcs-comment-form">
+		<legend>Add a Comment</legend>
+		<input type="hidden" id="pcs-comment-form-input-replyto">
+		<input type="hidden" id="pcs-comment-form-input-replyto-author">
+		<input type="hidden" id="pcs-comment-form-input-replyto-slug">
+		<fieldset class="form-group row">
+			<strong><label for="pcs-comment-form-input-name" class="col-sm-2 form-control-label text-xs-right">Name</label></strong>
+			<div class="col-sm-10">
+				<input  id="pcs-comment-form-input-name" class="form-control" type="text" placeholder="Your Name or Nickname" />
+			</div>
+		</fieldset>
+		<fieldset class="form-group row">
+			<strong><label for="pcs-comment-form-input-email" class="col-sm-2 form-control-label text-xs-right">E-mail</label></strong>
+			<div class="col-sm-10">
+				<input  id="pcs-comment-form-input-email" class="form-control" type="text" placeholder="Your E-mail address (optional)" />
+			</div>
+		</fieldset>
+		<fieldset class="form-group row">
+			<strong><label for="pcs-comment-form-input-website" class="col-sm-2 form-control-label text-xs-right">Website</label></strong>
+			<div class="col-sm-10">
+				<input  id="pcs-comment-form-input-website" class="form-control" type="text" placeholder="Your Website (optional)" />
+			</div>
+		</fieldset>
+		<fieldset class="form-group row">
+			<strong><label   for="pcs-comment-form-input-textarea" class="col-sm-2 form-control-label text-xs-right">Comment</label></strong>
+			<div class="col-sm-10">
+				<textarea id="pcs-comment-form-input-textarea" class="form-control" rows="5" style="resize:vertical;" placeholder="Your Comment"></textarea>
+				<p class="text-muted">You may format you comment with <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a>.</p>
+				<div class="alert alert-info clearfix" style="display: none;" role="alert" id="pcs-comment-form-display-replyto"></div>
+			  <div class="alert alert-info clearfix" style="display: none;" role="alert" id="pcs-comment-form-server-response"></div>
+			</div>
+		</fieldset>
 
-            {% if article %}
-                {% if not DISQUS_NO_ID %}
-                    var disqus_identifier = '{{ article.date|strftime('%Y-%m-') ~ article.slug if DISQUS_ID_PREFIX_SLUG else article.slug }}';
-                {% endif %}
-                var disqus_url = '{{ SITEURL }}/{{ article.url }}';
-            {% elif page %}
-                {% if not DISQUS_NO_ID %}
-                    var disqus_identifier = 'page-{{ page.slug }}';
-                {% endif %}
-                var disqus_url = '{{ SITEURL }}/{{ page.url }}';
-            {% endif %}
+		<div class="form-group row">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-primary" id="pcs-comment-form-button-submit">Write Comment</button>
+				<i class="fa fa-rss"></i>
+				<a href="https://notionsandnotes.org/feeds/comment.static-comments-via-email.atom.xml">Comment Atom Feed</a>
+			</div>
+		</div>
+	</form>
+</section>
+</section>
 
-            var disqus_config = function () {
-                this.language = "{{ DEFAULT_LANG }}";
-            };
+<script type="text/javascript">
+var CommentSystem = {
+	display_replyto_html: function(comment_content, article_slug, author) {return ''},
 
-            /* * * DON'T EDIT BELOW THIS LINE * * */
-            (function () {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript';
-                dsq.async = true;
-                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-        </script>
-        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
-            Disqus.</a></noscript>
-        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	cancelReply: function() {
+		$('#commentForm_replyto').val("");
+		$('#pcs-comment-form-display-replyto').hide();
+	},
 
-    </section>
+	setReply: function(slug, author) {
+		slug   = decodeURIComponent(slug);
+		author = decodeURIComponent(author);
+
+		$('html, body').animate({ scrollTop: $("#pcs-comment-form").offset().top }, 1000);
+
+		$('#pcs-comment-form-input-replyto').val(slug);
+
+		var jquery_escaped_id = slug.replace('.', '\\.')
+		var commentContent = $('#comment-' + jquery_escaped_id + ' .pcs-comment-content:first').text().trim()
+
+    $('#pcs-comment-form-display-replyto-author').html(author);
+    $('#pcs-comment-form-display-replyto-slug').html(slug);
+		$('#pcs-comment-form-display-replyto').html(this.display_replyto_html(commentContent, slug, author));
+		$('#pcs-comment-form-display-replyto').show();
+	},
+	
+	cancelSrvMsg: function() {
+	  $('#pcs-comment-form')[0].reset();
+	  $('#pcs-comment-form-server-response').hide();
+	},
+}
+
+
+$(function() {
+ CommentSystem.display_replyto_html = function(comment_content, article_slug, author) {
+  return ''
+  + '<p>This comment will be posted as a reply to <a href="#comment-'+article_slug+'">'+author+'</a>'
+  + '<a href="" class="pull-right btn btn-sm btn-secondary" onclick="CommentSystem.cancelReply(); return false;" title="Dismiss">'
+  +   '<i class="fa fa-times-circle"></i>'
+  + '</a></p>';
+ };
+ $('#pcs-comment-form').on("submit",
+  function( event ) {
+   event.preventDefault();
+   $.post("/cgi-automata/write-comment", {
+     name: $("#pcs-comment-form-input-name").val(),
+     email: $("#pcs-comment-form-input-email").val(),
+     website: $("#pcs-comment-form-input-website").val(),
+     replyto: $("#pcs-comment-form-input-replyto").val(),
+     message: $("#pcs-comment-form-input-textarea").val()
+    },
+    function(data) {
+      $('#pcs-comment-form-server-response').html(data);
+      $('#pcs-comment-form-server-response').append('<a href="" class="pull-right btn btn-sm btn-secondary" onclick="CommentSystem.cancelSrvMsg(); return false;" title="Dismiss"> <i class="fa fa-times-circle fa-lg"></i> </a>');
+      $('#pcs-comment-form-server-response').show();
+    	$('#pcs-comment-form-display-replyto').hide();
+     }
+    );
+  }
+ );
+});
+</script>
 {% endif %}

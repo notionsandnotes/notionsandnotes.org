@@ -3,7 +3,7 @@ PELICAN?=pelican
 PELICANOPTS=
 
 BASEDIR=$(CURDIR)
-INPUTDIR=$(BASEDIR)/../markdown
+INPUTDIR=$(BASEDIR)/../notionsandnotes-text-src
 OUTPUTDIR=$(BASEDIR)/../www.notionsandnotes.org/public
 CONFFILE=$(BASEDIR)/pelicanconf.py
 PUBLISHCONF=$(BASEDIR)/publishconf.py
@@ -30,6 +30,15 @@ DEBUG ?= 0
 ifeq ($(DEBUG), 1)
 	PELICANOPTS += -D
 endif
+
+IMGDIR=$(INPUTDIR)/images
+COMPRESSEDIMGDIR=$(BASEDIR)/../compressedimgs
+PNGS=$(wildcard $(IMGDIR)/*.png)
+PNGCS=$(patsubst $(IMGDIR)/%.png, $(COMPRESSEDIMGDIR)/%.png, $(PNGS))
+JPGS=$(wildcard $(IMGDIR)/*.jpg)
+JPGCS=$(patsubst $(IMGDIR)/%.jpg, $(COMPRESSEDIMGDIR)/%.jpg, $(JPGS))
+JPEGS=$(wildcard $(IMGDIR)/*.jpeg)
+JPEGCS=$(patsubst $(IMGDIR)/%.jpeg, $(COMPRESSEDIMGDIR)/%.jpeg, $(JPEGS))
 
 help:
 	@echo 'Makefile for a pelican Web site                                        '
@@ -84,10 +93,20 @@ stopserver:
 publish:
 	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(PUBLISHCONF) $(PELICANOPTS)
 
-ssh_upload: publish
+pre_upload: compressedimgs publish
+	mkdir -p $(OUTPUTDIR)/pdfs
+	echo 'Copying pdfs...'
+	cp -r ../tex/*.pdf $(OUTPUTDIR)/pdfs/
+	echo 'Compressing general files...'
+	find $(OUTPUTDIR) \( -name '*.js' -o -name '*.css' -o -name '*.html' -o -name '*.txt' -o -name '*.pdf' -o -name '*.ttf' -o -name '*.ico' -o -name '*.eot' -o -name '*.otf' -o -name '*.svg' -o -name '*.xml' \) -exec gzip --best --force {} \;
+	find $(OUTPUTDIR) -name "*~" -delete
+	echo 'Replacing images with compressed version..'
+	cp -f $(COMPRESSEDIMGDIR)/* $(OUTPUTDIR)/images/
+
+ssh_upload: pre_upload
 	scp -r $(OUTPUTDIR)/* $(SSH_HOST):$(SSH_TARGET_DIR)
 
-rsync_upload: publish
+rsync_upload: pre_upload
 	rsync -e "ssh -p $(SSH_PORT)" -P -rvzc --delete $(OUTPUTDIR)/ $(SSH_HOST):$(SSH_TARGET_DIR) --cvs-exclude
 
 dropbox_upload: publish
@@ -106,4 +125,18 @@ github: publish
 	ghp-import -b $(GITHUB_PAGES_BRANCH) $(OUTPUTDIR)
 	git push origin $(GITHUB_PAGES_BRANCH)
 
-.PHONY: html help clean regenerate serve devserver publish ssh_upload rsync_upload dropbox_upload ftp_upload s3_upload cf_upload github
+$(COMPRESSEDIMGDIR)/%.png: $(IMGDIR)/%.png
+	pngcrush -q -fix -rem allb -reduce -brute -l 9  $< $@
+	optipng -quiet -o7 $@
+	advpng -q -z4 $@
+
+$(COMPRESSEDIMGDIR)/%.jpeg: $(IMGDIR)/%.jpeg
+	jpegtran -copy none -optimize -outfile $@ $<
+
+$(COMPRESSEDIMGDIR)/%.jpg: $(IMGDIR)/%.jpg
+	jpegtran -copy none -optimize -outfile $@ $<
+
+compressedimgs: $(PNGCS) $(JPGCS) $(JPEGCS)
+	echo 'Compressing images...'
+
+.PHONY: html help clean regenerate serve devserver publish ssh_upload rsync_upload dropbox_upload ftp_upload s3_upload cf_upload github compressedimgs pre_upload

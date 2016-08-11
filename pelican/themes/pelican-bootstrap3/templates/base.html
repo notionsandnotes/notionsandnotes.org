@@ -91,67 +91,70 @@
               title="{{ SITENAME }} RSS Feed"/>
     {% endif %}
 
+<script src="{{ SITEURL }}/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="{{ SITEURL }}/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="{{ SITEURL }}/theme/js/respond.min.js"></script>
+
+
 </head>
 <body>
 
 <div class="navbar {% if BOOTSTRAP_NAVBAR_INVERSE %}navbar-inverse{% else %}navbar-default{% endif %} navbar-fixed-top" role="navigation">
-	<div class="container{% if BOOTSTRAP_FLUID %}-fluid{% endif %}">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="{{ SITEURL }}/" class="navbar-brand">
-                {% if SITELOGO %}<img src="{{ SITEURL }}/{{ SITELOGO }}" width="{{ SITELOGO_SIZE }}"/> {% endif %}
-                {% if not HIDE_SITENAME %}{{ SITENAME }}{% endif %}
-            </a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                {% for title, link in MENUITEMS %}
-                    <li><a href="{{ link }}">{{ title }}</a></li>
-                {% endfor %}
-
-                {% if DISPLAY_CATEGORIES_ON_MENU %}
-                  {% for cat, cat_articles in categories %}
-                   <li class="dropdown {% if cat == category %}active{% endif %}">
-                      <a href="#" class="dropdown-toggle" id="menu-{{ cat }}" data-toggle="dropdown" >
-                       {{ cat }}
-                       <span class="caret"></span>
-                      </a>
-                      <ul class="dropdown-menu" role="menu">
-                       {% for cat_article in cat_articles %}
-                        <li><a href="{{ SITEURL }}/{{ cat_article.url }}">{{ cat_article.title }}</a></li>
-                       {% endfor %}
-                      </ul>
-                  </li>
-                 {% endfor %}
-                {% endif %}
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-            {% if DISPLAY_PAGES_ON_MENU %}
-                <li class="dropdown">
-                   <a href="#" class="dropdown-toggle" id="menu-pages" data-toggle="dropdown" >
-                   Pages
-                   <span class="caret"></span>
-                   </a>
-                   <ul class="dropdown-menu" role="menu">
-                   {% for p in PAGES %}
-                      <li><a href="{{ SITEURL }}/{{ p.url }}">{{ p.menulabel|default(p.title) }}</a></li>
-                   {% endfor %}
-                   </ul>
-                </li>
-            {% endif %}
-       
-              <li><a href="{{ SITEURL }}/{{ ARCHIVES_URL | default('archives.html') }}"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
-
-            </ul>
-        </div>
+ <div class="container{% if BOOTSTRAP_FLUID %}-fluid{% endif %}">
+  <div class="navbar-header">
+   <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+   </button>
+   <a href="{{ SITEURL }}/" class="navbar-brand">
+    {% if SITELOGO %}<img src="{{ SITEURL }}/{{ SITELOGO }}" width="{{ SITELOGO_SIZE }}"/> {% endif %}
+    {% if not HIDE_SITENAME %}{{ SITENAME }}{% endif %}
+   </a>
+  </div>
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+   <ul class="nav navbar-nav">
+    {% for title, link in MENUITEMS %}
+     <li><a href="{{ link }}">{{ title }}</a></li>
+    {% endfor %}
+    {% if DISPLAY_CATEGORIES_ON_MENU %}
+     {% for cat, cat_articles in categories %}
+      <li class="dropdown {% if cat == category %}active{% endif %}">
+       <a href="#" class="dropdown-toggle" id="menu-{{ cat }}" data-toggle="dropdown" >
+        {{ cat }} <span class="caret"></span>
+       </a>
+       <ul class="dropdown-menu" role="menu">
+        {% for cat_article in cat_articles %}
+          <li><a href="{{ SITEURL }}/{{ cat_article.url }}">{{ cat_article.title }}</a></li>
+        {% endfor %}
+       </ul>
+      </li>
+     {% endfor %}
+    {% endif %}
+   </ul>
+   <ul class="nav navbar-nav navbar-right">
+    {% if DISPLAY_PAGES_ON_MENU %}
+     <li class="dropdown">
+      <a href="#" class="dropdown-toggle" id="menu-pages" data-toggle="dropdown" >
+       Pages<span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu" role="menu">
+       {% for p in PAGES %}
+        <li><a href="{{ SITEURL }}/{{ p.url }}">{{ p.menulabel|default(p.title) }}</a></li>
+       {% endfor %}
+      </ul>
+     </li>
+    {% endif %}
+    <li><a href="{{ SITEURL }}/{{ ARCHIVES_URL | default('archives.html') }}"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+   </ul>
+  </div>
         <!-- /.navbar-collapse -->
-    </div>
+ </div>
 </div> <!-- /.navbar -->
 <!-- Banner -->
 {% if BANNER and BANNER_ALL_PAGES %}
@@ -165,15 +168,6 @@
    {% endblock %}
 </div>
 {% include 'includes/footer.html' %}
-
-<script src="{{ SITEURL }}/theme/js/jquery.min.js"></script>
-
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="{{ SITEURL }}/theme/js/bootstrap.min.js"></script>
-
-<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-<script src="{{ SITEURL }}/theme/js/respond.min.js"></script>
-
 {% if BANNER %}
     <script src="{{ SITEURL }}/theme/js/bodypadding.js"></script>
 {% endif %}

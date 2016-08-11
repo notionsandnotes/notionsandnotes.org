@@ -1,3 +1,0 @@
-ErrorDocument 404 /404.html
-
-Redirect 301 /tech/web-development/pelican-render_math-index-update.html /tech/web-development/pelican-static-blog-setup.html#barry-steyn-updates-pelican-render_math-plugin-for-index-pages

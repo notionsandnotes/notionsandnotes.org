@@ -1,0 +1,715 @@
+
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
+
+\begin{frame}[t]{BLE Routing Parameters}
+
+Take note:
+
+\begin{itemize}
+\item Each device knows only about its neighbors.
+\begin{itemize}
+\item So, centralized algorithms for routing are not possible.  
+\item We assume a method exists for neighbor discovery.
+\end{itemize}
+ 
+\item Each device has low memory; in total only 64kB is available. Therefore,  
+\begin{itemize}
+\item We consider for the moment only a limited number of devices in total. 
+\item Schemes such as interval routing, PASTRY etc. can be investigated later to minimize memory consumption.  
+\end{itemize}
+\item Network topology is liable to change. 
+\begin{itemize}
+\item So algorithm needs to be adaptable to changes in topology. 
+\item But network is mostly fixed and changes happen only once in a while.  
+\end{itemize}  
+\item We only aim at a workable prelimary algorithm for a hundred or so devices.  
+\item Again, we consider a workable algorithm, and not the optimal one.  
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Distance Vector Routing}
+
+\begin{block}{Question}
+Each node knows only about its neighbors. With this information we need a method to route any packet to any destination.
+\end{block}
+  
+\begin{block}{Solution : Distance Vector Routing.}
+Patch up the local information using a distributed algorithm to determine a global routing table.
+ 
+
+\begin{itemize}
+\item Each node maintains a table of distances to every other node
+\item This information is spread to its neighbors whenever required
+\item Using such updates, the distance table is improved at each turn
+\item The algorithm converges eventually to actual distances/routes.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{DVR : Begin to formalize}
+Let us suppose we have a directed graph $G = (V, E)$ with vertex set $V$ consisting of $|V| = N$ vertices and edge set $E$. Weight of an edge $e$
+is denoted $wt(e)$.
+
+Each node $I$ has a distance vector or array consisting of $N$ entries, viz., $\delta (I,0), \delta (I, 1), \ldots , \delta (I,N-1)$. $\delta (I,J)$ is the distance from node $I$ to $J$. Initialize all $\delta (I,I) = 0$ and all $\delta (I,J) = \infty$ when $I \neq J$.
+ 
+\begin{block}{Idea : Relaxation}
+\begin{itemize}
+\item Relax the requirements.
+\item Algorithm finds a solution to the easier problem.
+\item Algorithm tightens the constraints in some part and improves the solution. Repeat.
+\end{itemize}
+\end{block}
+ 
+\vskip -.7em
+\begin{block}{Application}
+Find suboptimal distances and paths. Improve repeatedly on them. Converge to best solution.
+\end{block}
+\end{frame}
+
+\begin{frame}{Example : Shiju's Graph}
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm,
+  thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\Large\bfseries}]
+
+  \node[main node] (A) {A};
+  \node[main node] (B) [above right of=A] {B};
+  \node[main node] (F) [below right of=B] {F};
+  \node[main node] (C) [above right of=F] {C};
+  \node[main node] (D) [below right of=C] {D};
+  \node[main node] (E) [below of=F] {E};
+
+  \path[every node/.style={font=\sffamily\small}]
+    (A) edge node {1} (F)
+    (A) edge node {1} (B)
+    (B) edge node {1} (C)
+    (B) edge node {1} (D)
+    (B) edge node {1} (F)
+    (C) edge node {1} (D)
+    (D) edge node {1} (E)
+    (E) edge node {1} (A)
+    (F) edge [bend right] node {1} (C)
+    (F) edge node {1} (D)
+    (F) edge node {1} (E);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Centralized Bellman-Ford(Relaxation)}
+
+Assume that we know the topology of the whole graph. For simplicity, there is at most one link from any node $I$ to another node $J$.
+
+\begin{itemize}
+\item We need to construct a shortest path tree with root at $A$.
+\item For each node, it is enough to know its parent in this tree.
+\end{itemize}
+The algorithm runs as follows:
+\begin{enumerate}
+\item Initialize all distances as $\delta (I,I) =0$ and $\delta (I,J) = \infty$ for $I\neq J$.
+\item For each node $I$, its parent $p(I)$ is initially set to \texttt{NULL}.
+\item Order the set of edges in some manner as $E_0, E_1, E_2, \ldots , $.
+\item Let $i$ run from $0$ to $|V| -1$ where $|V|$ is the cardinality of the vertex set. Then,
+\begin{itemize}
+\item Let $e$ run from $E_0$ through $E_1, E_2, \ldots,$. Let $e = (X,Y)$ be connecting node $X$ to $Y$. Then, 
+\begin{itemize}
+\item[] If $\delta (A, Y) > \delta (A,X) + wt(e)$, Then,
+\item[] \qquad set $\delta (A,Y)= \delta (A,X)+wt(e)$ 
+\item[] \qquad set $p(Y) = X$.
+\end{itemize} 
+\end{itemize}
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Remarks}
+It can be proved that the algorithm converges to correct distances.
+\vskip 2em
+The time complexity is of order $\mathcal{O}(|V||E|)$ where $|V|$ and $|E|$ are cardinalities of vertex and edge sets.
+\vskip 2em
+We assumed that the whole network topology is known. Bellman - Ford is a distance vector routing method. If whole network
+topology is known on a processor with good resources, then Dijkstra's algorithm or Chandy-Misra's algorithm are better.
+\end{frame}
+
+\begin{frame}{Asynchronous Bellman-Ford : Fixed source}
+
+We need to construct a shortest path tree with root at $A$ and for each node, it is enough to know its parent in this tree.
+Initialize as follows:
+\begin{itemize}
+\item Initialize all distances as $\delta (I,I) =0$ and $\delta (I,J) = \infty$ for $I\neq J$.
+\item Node $A$ sends $\delta (A,I)=wt(A,I)$ to each neighbor $I$ of $A$ as a pair $(wt(A,I), I)$.
+\end{itemize}
+Run the following process at each node $I$. $\delta (A,I)$ is simply denoted $\delta (I)$.
+\begin{itemize}
+\item Wait for messages of format $(S, J)$. Ignore if $S \geq \delta (I)$. Otherwise,
+\begin{itemize}
+\item[] If parent $p(I) \neq J$ then set $p(I) = J$.
+\item[] Set $\delta (I) = S$.
+\item[] Send pair $(\delta (I) + wt(I,K), I)$ to all neighbors $K \neq p(I)$.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Asynchronous Bellman-Ford : All Pairs}
+
+\begin{block}{Neighbor Distance Data}
+\begin{itemize}
+\item[] Maintain two tables at each node $I$, viz, distance table(=routing table), and neighbor table,
+with distances via each neighbor to all nodes.
+\item[] The degree of the graph, i. e., number of neighbors for each node, is assumed have an upper bound $d$.
+\item[] So memory requirement at each node is less than $(d+1)n$ where $n$ is the number of nodes.
+\item[] It is enough to store only distance and the next hop towards each destination in some modifications of the algorithm, with other tradeoffs.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Asynchronous B-F Algorithm (Contd.)}
+\begin{block}{Basic idea}
+\begin{itemize}
+\item Each node $I$ sends its distance table $\delta(I,\_)$ to all its neighbors whenever it is updated.
+\item Each node $X$, upon reception of such an update, recomputes its own distace table as follows: 
+\item[] \begin{itemize}\item[] For destination $Y$, distance $\delta(X, Y)$ is set to minimum over all neighbors 
+$V$ of $X$ of: $\delta(V,Y) + wt(X,V)$. \item[] Here $wt(X,V)$ is the weight of the edge connecting $X$ to $V$. If there is more than one such edge, we
+take minimum again. \end{itemize}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Asynchronous B-F , Procedure, All- Pairs}
+Start same routine at all nodes $I$, with slight randomness and retransmission to alleviate collision issues.
+
+$\delta(I,J,K)$ denotes distance from $I$ to $K$ with $J$ as the next hop, where $J$ has to be a neighbor of $I$.
+\begin{block}{Initialize}
+\begin{itemize}
+\item For all neighbors $J$, and for all nodes $K \neq J$, set $\delta(I,J,K) =\infty$.
+\item Set $\delta(I,J,J) = wt(I,J)$.
+\item For each $K$, compute $\delta(I,K)$ as the minimum of $\delta(I,J,K)$ as $J$ runs through all neighbors of $I$. Broadcast this value to all neighbors of $I$.
+\end{itemize}
+\end{block} 
+\end{frame}
+
+\begin{frame}{Asy. B-F , Procedure, All- Pairs, Contd.}
+Node $I$ waits for, either: the weight of a link to a neighbor $J$ to change, in which case:
+\begin{block}{Link updation}
+\begin{itemize}
+\item[] If $wt(I,J)$ changes by $\partial$, then for all $K$, reset $\delta(I,J,K) = \delta(I,J,K) + \partial$.
+\end{itemize}
+\end{block} 
+or, for a distance table update of $\delta^{new}(J,K)$ towards destination $K$ from a neighbor $J$,
+\begin{block}{Neigbhor distance updation}
+\begin{itemize}
+\item[] Set $d(I,J,K) = \delta^{new}(J,K) + wt(I,J)$  and update $\delta(I,K)$ if necessary.
+\end{itemize}
+\end{block} 
+In either case, send the updated distance table values to all neighbors, and wait for either event as above, forever. 
+\end{frame}
+
+\begin{frame}{Remarks}
+\begin{itemize}
+\item Good part : Network flow is maximized under certain conditions(Cf, Ford \& Fulkerson) 
+\item Good part : Routing takes places even before full convergence
+\item Bad part : Difficult to optimize convergence. Sometimes does not converge at all upon deletion of links.
+\item Difficulty: Asynchronous distributed processing is an also art.
+\item Worst case behavior exponential, $\mathcal{O}(2^n)$. In practice rarely so bad.
+\item Have to experiment and find out constraints for good behavior.
+\item Such determiniation best done in simulation.
+\item Probabilistic estimates of messages of per unit time are of the order of $nd^{2+1/m}(\mathrm{ln}\ d)^{1+1/m}$, where $n$ is number of nodes, $d$ is the max. degree of a node, and $m$ is a constant depending on probability distribution used.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Addition, Deletion and Movement of links}
+
+\begin{block}{Running}
+The algorithm runs always, and asynchronously, at all nodes. Algorithms connects with all nodes within reach, and then within their reach, etc..
+\end{block}
+
+\begin{block}{Offline/Online nodes}
+If a node is offline, distances to that node from all nodes will be $\infty$. 
+We generally consider links(rather than nodes) going up and down, and these are reflected in their weights
+being finite or infinite. 
+\end{block}
+
+\begin{block}{Movement of nodes}
+When a node is moved, it is considered that some links from that node go down, and some other links come up. Therefore the problem
+of node movement is reduced that of addition and deletion of links.
+\end{block}
+\end{frame}
+
+\begin{frame}{Contd.}
+
+\begin{block}{Upon startup, or addition of node/link}
+If a node $X$ gets within range of a network with converging or converging Bellman-Ford algorithm, then:
+\begin{itemize}
+\item Some distances to $X$ will become finite.
+\item This information gets passed around, and new distances are computed, and passed around.
+\item B-F converges to newly optimal distances involving $X$ too.
+\end{itemize}
+\end{block}
+
+\begin{block}{Good news and Bad news}
+\vskip 1em
+General paradigm:
+\begin{itemize}
+\item Whenever a link goes up, or edge weights are reduced, algorithm updates new routes and distances fast.
+\item Propagation of information of link failure is slower. 
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Deletion of links}
+\begin{block}{Problem}
+Upon deletion of a link, sometimes algorithm converges successfully. In certain other scenarios, it results in problems. 
+Examples are:
+\begin{itemize}
+\item Looping
+\item Bouncing
+\item Counting to infinity
+\end{itemize}
+\end{block}
+
+\begin{block}{Solution}
+The Bellman-Ford algorithm is modified by a number of people in a number of situations to solve the problems. Two popular methods are:
+\begin{itemize}
+\item Set upper bounds for distances to avoid counting to infinity.
+\item Split horizon : Do not inform a neighbor of paths through that neighbor.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Contd.}
+\begin{block}{Solution: Contd.}
+\begin{itemize}
+\item Poisoned reverse: If a path from $I$ to $A$ goes through a neighbor $X$, tell $X$ that distance $\delta (I,A) = \infty$.
+\item Assign time to live(TTL) in routing protocol.
+\item Hold down: Increase delays as number of hops go up.
+\item Probablistic methods.
+\item Use a distributed version of the Dijkstra algorithm, instead of B-F,
+\item Have a "router" with higher processing abilities, and run the Dijkstra or Chandy-Misra algorithms there.
+\item etc.
+\end{itemize}
+\end{block}
+Each method has pros and cons. This is an issue to be examined closer and decided.
+\end{frame}
+
+
+\begin{frame}{Illustration : B-F Convergence}
+Initialization:
+\begin{columns}
+\column{.45\textwidth}
+\begin{tikzpicture}[>=stealth',shorten >=2pt,auto,node distance=1.5cm,
+  thin,main node/.style={circle,fill=blue!20,draw,font=\sffamily \bfseries}]
+
+
+  \node[main node] (A) {A};
+  \node[main node] (B) [above right of=A] {B};
+  \node[main node] (F) [below right of=B] {F};
+  \node[main node] (C) [above right of=F] {C};
+  \node[main node] (D) [below right of=C] {D};
+  \node[main node] (E) [below of=F] {E};
+
+  \path[every node/.style={font=\sffamily\small},thin]
+    (A) edge (F)
+        edge (B)
+    (B) edge (C)
+        edge (D)
+        edge (F)
+    (C) edge (D)
+    (D) edge (E)
+    (E) edge (A)
+    (F) edge (C)
+        edge (D)
+        edge (E);
+
+
+\end{tikzpicture}
+
+\column{.55\textwidth}
+\begin{table}[h]
+\begin{tabular}{|r|c|c|c|c|c|c|}
+\hline
+ & \multicolumn{6}{c|}{Distance $\delta (\_,J)$ to $J$} \\ 
+\hline
+$\delta (I,\_)$ & A &  B& C & D & E  & F \\
+\hline
+A & 0 & $\infty$ & $\infty$ & $\infty$ & $\infty$ & $\infty$ \\
+\hline
+B & $\infty$ & 0 & $\infty$ & $\infty$ & $\infty$ & $\infty$ \\
+\hline
+C & $\infty$ & $\infty$ & 0 & $\infty$ & $\infty$ & $\infty$ \\
+\hline
+D & $\infty$ & $\infty$ & $\infty$ & 0 & $\infty$ & $\infty$ \\
+\hline
+E & $\infty$ & $\infty$ & $\infty$ & $\infty$ &0  & $\infty$ \\
+\hline
+F & $\infty$ & $\infty$ & $\infty$ & $\infty$ & $\infty$ & 0 \\
+\hline
+\end{tabular}
+\end{table}
+\end{columns}
+Assume all bidirectional links with weight $1$.
+\end{frame}
+
+
+\begin{frame}{Illustration : B-F Convergence}
+Suppose $A, B, C, D ,E$ are up and $F$ is off. Suppose B-F process starts at $A$ and $D$ simultaneously and updates link info.
+\begin{columns}
+\column{.45\textwidth}
+\begin{tikzpicture}[>=stealth',shorten >=2pt,auto,node distance=1.5cm,
+  thin,main node/.style={circle,fill=blue!20,draw,font=\sffamily \bfseries}]
+
+
+  \node[main node] (A) {A};
+  \node[main node] (B) [above right of=A] {B};
+  \node[main node] (F) [below right of=B] {F};
+  \node[main node] (C) [above right of=F] {C};
+  \node[main node] (D) [below right of=C] {D};
+  \node[main node] (E) [below of=F] {E};
+
+  \path[every node/.style={font=\sffamily\small},thin]
+    (A) edge (F)
+        edge (B)
+    (B) edge (C)
+        edge (D)
+        edge (F)
+    (C) edge (D)
+    (D) edge (E)
+    (E) edge (A)
+    (F) edge (C)
+        edge (D)
+        edge (E);
+
+
+\end{tikzpicture}
+
+\column{.55\textwidth}
+\begin{table}[h]
+\begin{tabular}{|r|c|c|c|c|c|c|}
+\hline
+ & \multicolumn{6}{c|}{Distance $\delta (\_,J)$ to $J$} \\ 
+\hline
+$\delta (I,\_)$ & A &  B& C & D & E  & F \\
+\hline
+A & 0 & 1 & $\infty$ & $\infty$ & 1 & $\infty$ \\
+\hline
+B & $\infty$ & 0 & $\infty$ & $\infty$ & $\infty$ & $\infty$ \\
+\hline
+C & $\infty$ & $\infty$ & 0 & $\infty$ & $\infty$ & $\infty$ \\
+\hline
+D & $\infty$ & 1 & 1 & 0 & 1 & $\infty$ \\
+\hline
+E & $\infty$ & $\infty$ & $\infty$ & $\infty$ &0  & $\infty$ \\
+\hline
+F & $\infty$ & $\infty$ & $\infty$ & $\infty$ & $\infty$ & 0 \\
+\hline
+\end{tabular}
+\end{table}
+\end{columns}
+That $F$ is off is reflected in the infinite distances.
+\end{frame}
+
+
+\begin{frame}{Illustration : B-F Convergence}
+Next suppose process runs at $C$ and updates its own links and info from $D$. 
+\begin{columns}
+\column{.45\textwidth}
+\begin{tikzpicture}[>=stealth',shorten >=2pt,auto,node distance=1.5cm,
+  thin,main node/.style={circle,fill=blue!20,draw,font=\sffamily \bfseries}]
+
+
+  \node[main node] (A) {A};
+  \node[main node] (B) [above right of=A] {B};
+  \node[main node] (F) [below right of=B] {F};
+  \node[main node] (C) [above right of=F] {C};
+  \node[main node] (D) [below right of=C] {D};
+  \node[main node] (E) [below of=F] {E};
+
+  \path[every node/.style={font=\sffamily\small},thin]
+    (A) edge (F)
+        edge (B)
+    (B) edge (C)
+        edge (D)
+        edge (F)
+    (C) edge (D)
+    (D) edge (E)
+    (E) edge (A)
+    (F) edge (C)
+        edge (D)
+        edge (E);
+\end{tikzpicture}
+
+\column{.55\textwidth}
+\begin{table}[h]
+\begin{tabular}{|r|c|c|c|c|c|c|}
+\hline
+ & \multicolumn{6}{c|}{Distance $\delta (\_,J)$ to $J$} \\ 
+\hline
+$\delta (I,\_)$ & A &  B& C & D & E  & F \\
+\hline
+A & 0 & 1 & $\infty$ & $\infty$ & 1 & $\infty$ \\
+\hline
+B & $\infty$ & 0 & $\infty$ & $\infty$ & $\infty$ & $\infty$ \\
+\hline
+C & $\infty$ & 1 & 0 & 1 & 2 & $\infty$ \\
+\hline
+D & $\infty$ & 1 & 1 & 0 & 1 & $\infty$ \\
+\hline
+E & $\infty$ & $\infty$ & $\infty$ & $\infty$ &0  & $\infty$ \\
+\hline
+F & $\infty$ & $\infty$ & $\infty$ & $\infty$ & $\infty$ & 0 \\
+\hline
+\end{tabular}
+\end{table}
+\end{columns}
+Distance from $C$ to $E$ is updated.
+\end{frame}
+
+
+
+\begin{frame}{Illustration : B-F Convergence}
+Now suppose $B$ and $E$ update.
+\begin{columns}
+\column{.45\textwidth}
+\begin{tikzpicture}[>=stealth',shorten >=2pt,auto,node distance=1.5cm,
+  thin,main node/.style={circle,fill=blue!20,draw,font=\sffamily \bfseries}]
+
+
+  \node[main node] (A) {A};
+  \node[main node] (B) [above right of=A] {B};
+  \node[main node] (F) [below right of=B] {F};
+  \node[main node] (C) [above right of=F] {C};
+  \node[main node] (D) [below right of=C] {D};
+  \node[main node] (E) [below of=F] {E};
+
+  \path[every node/.style={font=\sffamily\small},thin]
+    (A) edge (F)
+        edge (B)
+    (B) edge (C)
+        edge (D)
+        edge (F)
+    (C) edge (D)
+    (D) edge (E)
+    (E) edge (A)
+    (F) edge (C)
+        edge (D)
+        edge (E);
+
+
+\end{tikzpicture}
+
+\column{.55\textwidth}
+\begin{table}[h]
+\begin{tabular}{|r|c|c|c|c|c|c|}
+\hline
+ & \multicolumn{6}{c|}{Distance $\delta (\_,J)$ to $J$} \\ 
+\hline
+$\delta (I,\_)$ & A &  B& C & D & E  & F \\
+\hline
+A & 0 & 1 & $\infty$ & $\infty$ & 1 & $\infty$ \\
+\hline
+B & 1 & 0 & 1 & 1 & 2 & $\infty$ \\
+\hline
+C & $\infty$ & 1 & 0 & 1 & 2 & $\infty$ \\
+\hline
+D & $\infty$ & 1 & 1 & 0 & 1 & $\infty$ \\
+\hline
+E & 1 & 2 & 2 & 1 &0  & $\infty$ \\
+\hline
+F & $\infty$ & $\infty$ & $\infty$ & $\infty$ & $\infty$ & 0 \\
+\hline
+\end{tabular}
+\end{table}
+\end{columns}
+This may happen in different order due to asynchronity.
+\end{frame}
+
+
+
+\begin{frame}{Illustration : B-F Convergence}
+Now let $A, C, D$ all update in some order.
+\begin{columns}
+\column{.45\textwidth}
+\begin{tikzpicture}[>=stealth',shorten >=2pt,auto,node distance=1.5cm,
+  thin,main node/.style={circle,fill=blue!20,draw,font=\sffamily \bfseries}]
+
+
+  \node[main node] (A) {A};
+  \node[main node] (B) [above right of=A] {B};
+  \node[main node] (F) [below right of=B] {F};
+  \node[main node] (C) [above right of=F] {C};
+  \node[main node] (D) [below right of=C] {D};
+  \node[main node] (E) [below of=F] {E};
+
+  \path[every node/.style={font=\sffamily\small},thin]
+    (A) edge (F)
+        edge (B)
+    (B) edge (C)
+        edge (D)
+        edge (F)
+    (C) edge (D)
+    (D) edge (E)
+    (E) edge (A)
+    (F) edge (C)
+        edge (D)
+        edge (E);
+
+
+\end{tikzpicture}
+
+\column{.55\textwidth}
+\begin{table}[h]
+\begin{tabular}{|r|c|c|c|c|c|c|}
+\hline
+ & \multicolumn{6}{c|}{Distance $\delta (\_,J)$ to $J$} \\ 
+\hline
+$\delta (I,\_)$ & A &  B& C & D & E  & F \\
+\hline
+A & 0 & 1 & 2 & 2 & 1 & $\infty$ \\
+\hline
+B & 1 & 0 & 1 & 1 & 2 & $\infty$ \\
+\hline
+C & 2 & 1 & 0 & 1 & 2 & $\infty$ \\
+\hline
+D & 2 & 1 & 1 & 0 & 1 & $\infty$ \\
+\hline
+E & 1 & 2 & 2 & 1 &0  & $\infty$ \\
+\hline
+F & $\infty$ & $\infty$ & $\infty$ & $\infty$ & $\infty$ & 0 \\
+\hline
+\end{tabular}
+\end{table}
+\end{columns}
+Distances have converged to the best ones except those involving $F$.
+\end{frame}
+
+
+
+\begin{frame}{Illustration : B-F Convergence}
+Now let $F$ come up.
+\begin{columns}
+\column{.45\textwidth}
+\begin{tikzpicture}[>=stealth',shorten >=2pt,auto,node distance=1.5cm,
+  thin,main node/.style={circle,fill=blue!20,draw,font=\sffamily \bfseries}]
+
+
+  \node[main node] (A) {A};
+  \node[main node] (B) [above right of=A] {B};
+  \node[main node] (F) [below right of=B] {F};
+  \node[main node] (C) [above right of=F] {C};
+  \node[main node] (D) [below right of=C] {D};
+  \node[main node] (E) [below of=F] {E};
+
+  \path[every node/.style={font=\sffamily\small},thin]
+    (A) edge (F)
+        edge (B)
+    (B) edge (C)
+        edge (D)
+        edge (F)
+    (C) edge (D)
+    (D) edge (E)
+    (E) edge (A)
+    (F) edge (C)
+        edge (D)
+        edge (E);
+
+
+\end{tikzpicture}
+
+\column{.55\textwidth}
+\begin{table}[h]
+\begin{tabular}{|r|c|c|c|c|c|c|}
+\hline
+ & \multicolumn{6}{c|}{Distance $\delta (\_,J)$ to $J$} \\ 
+\hline
+$\delta (I,\_)$ & A &  B& C & D & E  & F \\
+\hline
+A & 0 & 1 & 2 & 2 & 1 & $\infty$ \\
+\hline
+B & 1 & 0 & 1 & 1 & 2 & $\infty$ \\
+\hline
+C & 2 & 1 & 0 & 1 & 2 & $\infty$ \\
+\hline
+D & 2 & 1 & 1 & 0 & 1 & $\infty$ \\
+\hline
+E & 1 & 2 & 2 & 1 &0  & $\infty$ \\
+\hline
+F & 1 & 1 & 1 & 1 & 1 & 0 \\
+\hline
+\end{tabular}
+\end{table}
+\end{columns}
+Now it will spread to all other nodes.
+\end{frame}
+
+
+\begin{frame}{Illustration : B-F Convergence}
+Final convergence
+\begin{columns}
+\column{.45\textwidth}
+\begin{tikzpicture}[>=stealth',shorten >=2pt,auto,node distance=1.5cm,
+  thin,main node/.style={circle,fill=blue!20,draw,font=\sffamily \bfseries}]
+
+
+  \node[main node] (A) {A};
+  \node[main node] (B) [above right of=A] {B};
+  \node[main node] (F) [below right of=B] {F};
+  \node[main node] (C) [above right of=F] {C};
+  \node[main node] (D) [below right of=C] {D};
+  \node[main node] (E) [below of=F] {E};
+
+  \path[every node/.style={font=\sffamily\small},thin]
+    (A) edge (F)
+        edge (B)
+    (B) edge (C)
+        edge (D)
+        edge (F)
+    (C) edge (D)
+    (D) edge (E)
+    (E) edge (A)
+    (F) edge (C)
+        edge (D)
+        edge (E);
+
+
+\end{tikzpicture}
+
+\column{.55\textwidth}
+\begin{table}[h]
+\begin{tabular}{|r|c|c|c|c|c|c|}
+\hline
+ & \multicolumn{6}{c|}{Distance $\delta (\_,J)$ to $J$} \\ 
+\hline
+$\delta (I,\_)$ & A &  B& C & D & E  & F \\
+\hline
+A & 0 & 1 & 2 & 2 & 1 & 1 \\
+\hline
+B & 1 & 0 & 1 & 1 & 2 & 1 \\
+\hline
+C & 2 & 1 & 0 & 1 & 2 & 1 \\
+\hline
+D & 2 & 1 & 1 & 0 & 1 & 1 \\
+\hline
+E & 1 & 2 & 2 & 1 &0  & 1 \\
+\hline
+F & 1 & 1 & 1 & 1 & 1 & 0 \\
+\hline
+\end{tabular}
+\end{table}
+\end{columns}
+\end{frame}
+
+
+
+\begin{frame}{Illustration : Counting to Infinity}
+
+Let us suppose there are three nodes $1, 2, 3$ and two nodes such that $\delta (1,2) = 1, \delta (2,3) = 1$. Asynchronous Bellman-Ford converges $\delta (1,3) = 1+1=2$.
+Now suppose the link between nodes $2$ and $3$ goes off, or node $3$ goes off, and the following ensues at nodes $1$ and $2$:
+\begin{itemize}
+\item Distances are: $\delta (1,2) = 1$, $\delta (1,3)=2$ and $\delta (2,3)=\infty$.
+\item Node $2$ thinks the least distance path to $3$ is through $1$ and resets $\delta (2,3)$ to $\delta (1,2) + \delta (1,3) = 3$.
+\item Node $1$ thinks the least distance path to $3$ is through $2$ and resets $\delta (1,3)$ to $\delta (1,2) + \delta (2,3) = 4$.
+\item Node $2$ thinks the least distance path to $3$ is through $1$ and resets $\delta (2,3)$ to $\delta (1,2) + \delta (1,3) = 5$.
+\item Next, resets $\delta (1,3)$ to $6$, etc.
+\end{itemize}
+
+\end{frame}
+
+

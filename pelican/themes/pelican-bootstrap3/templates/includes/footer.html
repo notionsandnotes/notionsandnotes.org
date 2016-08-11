@@ -5,8 +5,7 @@
       <div class="row">
           <div class="col-sm-3">
            <h3><i class="fa fa-info-circle fa-lg"></i> Colophon</h3> 
-           Tweet to me: <a href="https://twitter.com/intent/tweet?screen_name=NotionsandNotes" class="twitter-mention-button" data-related="NotionsandNotes">Tweet to @NotionsandNotes</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<font size=2> An ad-hoc weblog to <a href="http://www.perseus.tufts.edu/hopper/text?doc=Hom.+Od.+11.13.1&fromdoc=Perseus%3Atext%3A1999.01.0218">(re)-learn</a> and <a href="http://www.maa.org/sites/default/files/pdf/CUPM/pdf/Weil1954.pdf">clarify</a> some graduate-level mathematics, as a semi-public exercise. Author is <a href="http://www.goodreads.com/quotes/952916-no-mathematician-should-ever-allow-him-to-forget-that-mathematics">mid 30-s</a>, originally an engineer; mathematical experience is an <a href="http://www.online-literature.com/dostoevsky/4395/">incomplete</a> graduate education during <a href="http://www.phdcomics.com/comics/archive.php?comicid=585">mid</a>-to-<a href="http://www.phdcomics.com/comics/archive.php?comicid=682">late</a> <a href="http://www.phdcomics.com/comics/archive.php?comicid=360">20s</a>. Updation will necessarily be in between <a href="http://www.poetryfoundation.org/poems-and-poets/poems/detail/56966">life</a> and <a href="http://www.bartleby.com/129/">work</a> demands. <a href="http://www.sciencecartoonsplus.com/gallery/math/math07.gif">Feedback</a>, corrections, better citations or other communications are welcome via e-mail: <tt>george</tt> @ this site's domain name (without www).<br>Tweet to me: </font><a href="https://twitter.com/intent/tweet?screen_name=NotionsandNotes" class="twitter-mention-button" data-related="NotionsandNotes">Tweet to @NotionsandNotes</a>
           </div>
           <div class="col-sm-3">
            <h4><i class="fa fa-tags fa-lg"></i>All Tags List</h4> 
@@ -16,13 +15,17 @@
              {% endfor %}
            </ul>
           </div>
+{% if DISQUS_SITENAME %}
           <div class="col-sm-3">
            <h3><i class="fa fa-comments fa-lg"></i>Recent Comments</h3>
-                <script type="text/javascript" src="http://{{ DISQUS_SITENAME }}.disqus.com/recent_comments_widget.js?num_items=5&hide_mods=0&hide_avatars=0&avatar_size=32&excerpt_length=100"></script>
+                <script type="text/javascript" src="https://{{ DISQUS_SITENAME }}.disqus.com/recent_comments_widget.js?num_items=5&hide_mods=0&hide_avatars=0&avatar_size=32&excerpt_length=100"></script>
           </div>
+{% endif %}
+{% if TWITTER_WIDGET_ID %}
           <div class="col-sm-3">
             {% include 'includes/twitter_timeline.html' %}
           </div>
+{% endif %}
       </div>
       <hr><hr>
       <div class="row">
@@ -32,7 +35,7 @@
             {% if first_date == last_date %}
                {% set copy_date = first_date  %}
             {% else %}
-               {% set copy_date = first_date + ' -- ' + last_date  %}
+               {% set copy_date = last_date + ' -- ' + first_date  %}
 	    {% endif %}
          {% else %}
             {% set copy_date = '' %}
